@@ -1,0 +1,1264 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="SIA 1 student learning portal: register, log in, and study your modules.">
+<title>SYSTEM INTEGRATION ARCHITECTURE 1 | Student Portal</title>
+<script>try{var _t=JSON.parse(localStorage.getItem("sia1_theme_v1"));document.documentElement.setAttribute("data-theme",_t==="dark"?"dark":"light")}catch(e){document.documentElement.setAttribute("data-theme","light")}</script>
+<style>
+
+:root {
+  --ink:#142b2b; --muted:#5c706e; --paper:#f6f8f4; --white:#fff;
+  --green:#c9f36a; --green-dark:#254b3e; --line:#dce5dc;
+  --peach:#f5d2b7; --blue:#dcecf0; --radius:24px;
+}
+* { box-sizing:border-box; }
+html { scroll-behavior:smooth; }
+body {
+  margin:0; background:var(--paper); color:var(--ink);
+  font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+  line-height:1.6;
+}
+a { color:inherit; text-decoration:none; }
+button { font:inherit; }
+.container { width:min(1160px,calc(100% - 40px)); margin:auto; }
+header {
+  position:sticky; top:0; z-index:20;
+  background:rgba(246,248,244,.92); backdrop-filter:blur(14px);
+  border-bottom:1px solid rgba(220,229,220,.8);
+}
+.nav { height:76px; display:flex; align-items:center; justify-content:space-between; gap:24px; }
+.brand { display:flex; align-items:center; gap:11px; font-weight:850; letter-spacing:-.04em; }
+.brand-mark {
+  width:36px; height:36px; border-radius:12px; background:var(--green);
+  display:grid; place-items:center; font-weight:950; color:var(--green-dark);
+}
+.nav-links { display:flex; align-items:center; gap:27px; color:#425a55; font-size:.92rem; font-weight:650; }
+.nav-links a:hover { color:#0b211b; }
+.nav-cta,.btn {
+  display:inline-flex; align-items:center; justify-content:center; gap:9px;
+  border-radius:999px; padding:12px 19px; font-weight:750;
+  border:1px solid transparent; transition:transform .2s,background .2s;
+}
+.nav-cta,.btn-primary { background:var(--green-dark); color:white; }
+.nav-cta:hover,.btn:hover { transform:translateY(-2px); }
+.menu-toggle { display:none; background:transparent; border:0; font-size:1.6rem; color:var(--ink); }
+.hero { padding:74px 0 66px; overflow:hidden; }
+.hero-grid { display:grid; grid-template-columns:1.02fr .98fr; align-items:center; gap:52px; }
+.eyebrow {
+  display:inline-flex; align-items:center; gap:9px; color:var(--green-dark);
+  background:#e8f3d8; padding:8px 13px; border-radius:999px;
+  font-size:.78rem; text-transform:uppercase; letter-spacing:.12em; font-weight:850;
+}
+.dot { width:7px; height:7px; border-radius:50%; background:#579452; }
+h1,h2,h3,p { margin-top:0; }
+h1 { font-size:clamp(2.8rem,5.7vw,5.45rem); line-height:.99; letter-spacing:-.075em; margin:24px 0; }
+h1 span { color:#65866b; }
+.hero-copy { font-size:1.1rem; color:var(--muted); max-width:570px; }
+.hero-actions { display:flex; gap:12px; flex-wrap:wrap; margin:28px 0 24px; }
+.btn-outline { border-color:#cbd8cc; background:transparent; }
+.btn-outline:hover { background:white; }
+.trust-row { display:flex; gap:20px; flex-wrap:wrap; color:#536a61; font-size:.88rem; font-weight:650; }
+.trust-row span:before {
+  content:"✓"; display:inline-grid; place-items:center; background:#e1edcf;
+  color:#315a3e; border-radius:50%; width:20px; height:20px;
+  margin-right:7px; font-size:.75rem;
+}
+.hero-art {
+  position:relative; min-height:465px; border-radius:32px; background:#dcebe1;
+  padding:25px; display:flex; align-items:center; justify-content:center; overflow:hidden;
+}
+.hero-art:before,.hero-art:after { content:""; position:absolute; border-radius:50%; background:#c4e2c7; }
+.hero-art:before { width:300px; height:300px; right:-90px; top:-100px; }
+.hero-art:after { width:220px; height:220px; left:-95px; bottom:-100px; background:#f0d4b6; }
+.art-window {
+  z-index:1; width:min(100%,410px); background:#fff; border:1px solid #d7e3d8;
+  border-radius:20px; box-shadow:0 24px 60px #284f3b20; overflow:hidden; transform:rotate(2deg);
+}
+.window-top {
+  height:42px; background:#f4f7f1; border-bottom:1px solid #e6ece4;
+  display:flex; align-items:center; padding:0 15px; gap:6px;
+}
+.window-top i { width:8px; height:8px; border-radius:50%; background:#d7dfd5; }
+.window-title { margin-left:8px; font-size:.72rem; color:#66776d; font-weight:700; }
+.art-content { padding:22px; }
+.art-label { font-size:.72rem; text-transform:uppercase; letter-spacing:.13em; color:#6b8774; font-weight:850; }
+.art-heading { font-size:1.6rem; font-weight:850; letter-spacing:-.05em; line-height:1.1; margin:8px 0 18px; }
+.progress-card {
+  border:1px solid #e3ebe2; border-radius:13px; padding:13px; margin-bottom:10px;
+  display:flex; align-items:center; gap:12px;
+}
+.progress-icon { height:38px; width:38px; display:grid; place-items:center; background:#e8f3d8; border-radius:11px; font-size:1.2rem; }
+.progress-card strong { display:block; font-size:.87rem; }
+.progress-card small { color:#77867b; font-size:.74rem; }
+.progress-bar { height:6px; background:#eaf0e8; border-radius:99px; margin-top:7px; overflow:hidden; }
+.progress-bar span { display:block; height:100%; background:#8ebd78; border-radius:99px; }
+.stat-pill {
+  position:absolute; z-index:2; background:white; border:1px solid #dce8dc;
+  border-radius:16px; padding:13px 17px; box-shadow:0 15px 35px #244b3420;
+  font-size:.8rem; font-weight:750;
+}
+.stat-pill strong { display:block; font-size:1.45rem; letter-spacing:-.05em; }
+.stat-one { left:4%; bottom:50px; }
+.stat-two { right:3%; top:60px; }
+.section { padding:82px 0; }
+.section-white { background:#fff; }
+.section-head { display:flex; align-items:end; justify-content:space-between; gap:30px; margin-bottom:34px; }
+.kicker { font-size:.76rem; letter-spacing:.14em; text-transform:uppercase; font-weight:850; color:#63816a; margin-bottom:12px; }
+h2 { font-size:clamp(2.1rem,4vw,3.5rem); line-height:1.04; letter-spacing:-.065em; margin-bottom:14px; }
+.section-head p { max-width:510px; color:var(--muted); margin-bottom:3px; }
+.text-link { font-weight:800; color:#315e46; border-bottom:1px solid #a9c5a7; padding-bottom:3px; white-space:nowrap; }
+.why-grid { display:grid; grid-template-columns:.9fr 1.1fr; gap:60px; align-items:start; }
+.why-intro p { color:var(--muted); max-width:460px; }
+.feature-grid { display:grid; grid-template-columns:1fr 1fr; gap:14px; }
+.feature { border:1px solid var(--line); border-radius:18px; padding:22px; background:#fbfcf9; }
+.feature-icon { width:43px; height:43px; border-radius:13px; background:#e7f0dc; display:grid; place-items:center; font-size:1.2rem; margin-bottom:17px; }
+.feature:nth-child(2) .feature-icon { background:#f8e6d6; }
+.feature:nth-child(3) .feature-icon { background:#e0edf1; }
+.feature:nth-child(4) .feature-icon { background:#ece5f5; }
+.feature h3 { font-size:1.08rem; letter-spacing:-.03em; margin-bottom:7px; }
+.feature p { font-size:.9rem; color:var(--muted); margin:0; }
+.lesson-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:17px; }
+.lesson {
+  border:1px solid var(--line); border-radius:20px; background:#fff; padding:23px;
+  display:flex; flex-direction:column; min-height:275px; transition:transform .2s,box-shadow .2s;
+}
+.lesson:hover { transform:translateY(-4px); box-shadow:0 18px 35px #1d483010; }
+.lesson-top { display:flex; justify-content:space-between; align-items:center; margin-bottom:23px; }
+.chapter { font-size:.78rem; font-weight:850; letter-spacing:.1em; color:#587e60; }
+.lesson-tag { font-size:.72rem; padding:5px 9px; border-radius:99px; background:#edf4e7; color:#416448; font-weight:750; }
+.lesson h3 { font-size:1.35rem; line-height:1.15; letter-spacing:-.04em; margin-bottom:10px; }
+.lesson p { color:var(--muted); font-size:.92rem; }
+.lesson a { font-size:.88rem; font-weight:800; color:#315e46; margin-top:auto; padding-top:13px; }
+.lesson a span { padding-left:5px; }
+.policy-wrap { display:grid; grid-template-columns:.72fr 1.28fr; gap:48px; align-items:start; }
+.policy-intro { position:sticky; top:110px; }
+.policy-intro p { color:var(--muted); }
+.policy-list { display:grid; gap:12px; }
+.policy-item { border:1px solid var(--line); border-radius:16px; background:white; overflow:hidden; }
+.policy-button {
+  width:100%; border:0; background:transparent; text-align:left; padding:20px 22px;
+  display:flex; justify-content:space-between; gap:15px; align-items:center;
+  font-weight:800; color:var(--ink); cursor:pointer;
+}
+.policy-button span:last-child { font-size:1.35rem; color:#608067; transition:transform .2s; }
+.policy-content { padding:0 22px 20px; color:var(--muted); font-size:.92rem; }
+.policy-content ul { padding-left:20px; margin:0; }
+.policy-content li { margin:7px 0; }
+.policy-content[hidden] { display:none; }
+.cta-section { padding:25px 0 84px; }
+.cta-panel {
+  border-radius:28px; background:#203f34; color:white; padding:48px;
+  display:flex; justify-content:space-between; align-items:center; gap:30px;
+  position:relative; overflow:hidden;
+}
+.cta-panel:after {
+  content:""; position:absolute; width:260px; height:260px; right:20%; top:-180px;
+  border:1px solid #ffffff25; border-radius:50%;
+  box-shadow:0 0 0 30px #ffffff08,0 0 0 60px #ffffff06;
+}
+.cta-panel h2 { max-width:620px; margin-bottom:10px; }
+.cta-panel p { color:#d2e1d5; margin-bottom:0; }
+.cta-panel .btn { background:var(--green); color:#203f34; white-space:nowrap; z-index:1; }
+footer { background:#f0f4ed; border-top:1px solid var(--line); padding:45px 0 22px; }
+.footer-grid { display:grid; grid-template-columns:1.5fr 1fr 1fr; gap:40px; padding-bottom:32px; }
+.footer-brand p { max-width:350px; color:var(--muted); font-size:.9rem; margin-top:14px; }
+footer h3 { font-size:.86rem; margin-bottom:13px; }
+footer ul { list-style:none; padding:0; margin:0; display:grid; gap:8px; color:var(--muted); font-size:.9rem; }
+.footer-bottom { border-top:1px solid var(--line); padding-top:18px; color:#6b7c70; font-size:.8rem; display:flex; justify-content:space-between; gap:15px; flex-wrap:wrap; }
+.notice {
+  position:fixed; bottom:20px; left:50%; transform:translate(-50%,20px); opacity:0;
+  pointer-events:none; background:#203f34; color:white; padding:12px 18px;
+  border-radius:999px; box-shadow:0 8px 25px #0002; transition:.25s; z-index:40; font-size:.9rem;
+}
+.notice.show { opacity:1; transform:translate(-50%,0); }
+
+@media(max-width:850px) {
+  .hero-grid,.why-grid,.policy-wrap { grid-template-columns:1fr; }
+  .hero { padding-top:48px; }
+  .hero-art { min-height:410px; }
+  .why-grid { gap:28px; }
+  .policy-intro { position:static; }
+  .lesson-grid { grid-template-columns:1fr 1fr; }
+  .section-head { align-items:start; flex-direction:column; }
+  .cta-panel { align-items:flex-start; flex-direction:column; padding:35px; }
+}
+@media(max-width:620px) {
+  .container { width:min(100% - 28px,1160px); }
+  .nav { height:66px; }
+  .menu-toggle { display:block; }
+  .nav-cta { display:none; }
+  .nav-links {
+    display:none; position:absolute; left:14px; right:14px; top:65px;
+    background:white; border:1px solid var(--line); border-radius:17px;
+    padding:18px; box-shadow:0 15px 30px #142b2b12;
+    flex-direction:column; align-items:stretch; gap:14px;
+  }
+  .nav-links.open { display:flex; }
+  h1 { font-size:clamp(2.8rem,14vw,4.2rem); }
+  .hero { padding:38px 0 48px; }
+  .hero-grid { gap:30px; }
+  .hero-art { min-height:360px; padding:15px; }
+  .art-content { padding:16px; }
+  .stat-pill { padding:9px 12px; }
+  .stat-pill strong { font-size:1.2rem; }
+  .stat-one { left:2%; bottom:24px; }
+  .stat-two { right:2%; top:24px; }
+  .section { padding:58px 0; }
+  .feature-grid,.lesson-grid { grid-template-columns:1fr; }
+  .feature { padding:19px; }
+  .lesson { min-height:240px; }
+  .cta-panel { padding:27px 22px; }
+  .footer-grid { grid-template-columns:1fr; gap:25px; }
+  .footer-bottom { flex-direction:column; }
+}
+
+/* Hamburger side menu */
+.menu-toggle {
+  display:inline-flex; align-items:center; justify-content:center;
+  width:44px; height:44px; border:1px solid var(--line); border-radius:12px;
+  background:#fff; font-size:1.55rem; cursor:pointer; flex-shrink:0;
+}
+.side-menu-backdrop {
+  position:fixed; inset:0; background:#10221d80; z-index:80;
+  opacity:0; visibility:hidden; transition:opacity .22s,visibility .22s;
+}
+.side-menu-backdrop.open { opacity:1; visibility:visible; }
+.side-menu {
+  position:absolute; top:0; right:0; height:100%; width:min(360px,88vw);
+  background:#fff; padding:25px; box-shadow:-18px 0 50px #0002;
+  transform:translateX(100%); transition:transform .25s;
+  display:flex; flex-direction:column; gap:12px;
+}
+.side-menu-backdrop.open .side-menu { transform:translateX(0); }
+.side-menu-head {
+  display:flex; align-items:center; justify-content:space-between; gap:12px;
+  padding-bottom:18px; border-bottom:1px solid var(--line); margin-bottom:8px;
+}
+.side-menu-close { border:0; background:#f0f4ed; border-radius:10px; width:40px; height:40px; font-size:1.5rem; cursor:pointer; }
+.side-menu-label { font-size:.74rem; font-weight:850; letter-spacing:.12em; text-transform:uppercase; color:var(--muted); margin:12px 0 2px; }
+.side-menu-action {
+  width:100%; display:flex; align-items:center; gap:12px; text-align:left;
+  padding:15px; border:1px solid var(--line); background:#fff; border-radius:13px;
+  color:var(--ink); font-weight:800; cursor:pointer;
+}
+.side-menu-action:hover { background:#f3f7ef; border-color:#b8cdb5; }
+.side-menu-action .menu-icon {
+  width:38px; height:38px; border-radius:11px; background:#e8f3d8;
+  display:grid; place-items:center; font-size:1.15rem; flex-shrink:0;
+}
+.side-menu-action span small { display:block; font-weight:500; color:var(--muted); margin-top:2px; }
+.side-menu-action.signup-side { background:var(--green-dark); color:#fff; border-color:var(--green-dark); }
+.side-menu-action.signup-side .menu-icon { background:#c9f36a; color:var(--green-dark); }
+.side-menu-action.signup-side span small { color:#e0e9e2; }
+.side-menu-foot { margin-top:auto; padding-top:18px; border-top:1px solid var(--line); font-size:.82rem; color:var(--muted); }
+@media(min-width:621px) {
+  .menu-toggle { display:inline-flex; }
+  .nav { gap:18px; }
+  .nav-links { margin-left:auto; }
+}
+@media(max-width:620px) {
+  .nav-links { display:none; }
+  .nav-account { display:none; }
+  .nav { gap:12px; }
+  .menu-toggle { display:inline-flex; }
+}
+
+/* Account and dashboard interface */
+.nav-account { display:flex; align-items:center; gap:9px; }
+.nav-account button {
+  border:1px solid #cbd8cc; background:white; color:var(--ink);
+  border-radius:999px; padding:10px 15px; font-weight:750; cursor:pointer;
+}
+.nav-account .signup-trigger { background:var(--green-dark); color:white; border-color:var(--green-dark); }
+#authUser { display:none; font-size:.86rem; font-weight:800; color:var(--green-dark); }
+.auth-overlay {
+  position:fixed; inset:0; background:#10221dd9; display:none;
+  align-items:center; justify-content:center; padding:20px; z-index:100; overflow:auto;
+}
+.auth-overlay.open { display:flex; }
+.auth-modal {
+  width:min(100%,480px); background:#fff; border-radius:24px; padding:28px;
+  position:relative; box-shadow:0 25px 80px #0004;
+}
+.auth-close { position:absolute; right:17px; top:12px; border:0; background:transparent; font-size:1.8rem; cursor:pointer; color:var(--muted); }
+.auth-brand { display:flex; align-items:center; gap:10px; font-size:.78rem; font-weight:900; letter-spacing:-.02em; margin:0 35px 23px 0; }
+.auth-modal h2 { font-size:2rem; margin:0 0 7px; letter-spacing:-.05em; }
+.auth-subtitle,.auth-note { color:var(--muted); font-size:.9rem; }
+.auth-message { display:none; border-radius:10px; background:#eef5e8; padding:10px 12px; font-size:.87rem; margin:14px 0; color:#254b3e; }
+.auth-message.show { display:block; }
+.auth-form { display:grid; gap:13px; margin-top:17px; }
+.auth-field { display:grid; gap:6px; font-size:.85rem; font-weight:800; }
+.auth-field input {
+  width:100%; border:1px solid #d7e0d5; border-radius:11px; padding:12px 13px;
+  font:inherit; font-weight:500; outline-color:#63816a;
+}
+.auth-submit { border:0; border-radius:12px; background:var(--green-dark); color:white; padding:13px; font-weight:850; cursor:pointer; margin-top:3px; }
+.auth-note { font-size:.75rem; margin:17px 0 0; }
+.auth-switch { font-size:.88rem; color:var(--muted); margin:18px 0 0; text-align:center; }
+.auth-switch button { border:0; background:transparent; padding:0; font:inherit; font-weight:850; color:var(--green-dark); text-decoration:underline; cursor:pointer; }
+.dashboard-shell { min-height:100vh; background:#f4f7f1; padding:26px 0 60px; }
+.dashboard-top { display:flex; align-items:center; justify-content:space-between; gap:15px; flex-wrap:wrap; margin-bottom:28px; }
+.dashboard-top .brand { font-size:.95rem; }
+.dashboard-actions { display:flex; gap:9px; align-items:center; }
+.dashboard-actions button,.dashboard-button {
+  border:1px solid #cbd8cc; background:white; color:var(--ink);
+  border-radius:11px; padding:10px 14px; font-weight:800; cursor:pointer;
+}
+.dashboard-actions .logout-button { background:var(--green-dark); color:white; border-color:var(--green-dark); }
+.dashboard-welcome { background:#203f34; color:white; border-radius:24px; padding:30px; margin-bottom:22px; position:relative; overflow:hidden; }
+.dashboard-welcome .kicker { color:#c9f36a; }
+.dashboard-welcome h1 { font-size:clamp(2rem,5vw,3.3rem); margin:8px 0 10px; letter-spacing:-.06em; }
+.dashboard-welcome p { color:#d2e1d5; margin:0; max-width:700px; }
+.dashboard-stats { display:grid; grid-template-columns:repeat(3,1fr); gap:15px; margin-bottom:22px; }
+.dashboard-stat,.dashboard-panel { background:white; border:1px solid var(--line); border-radius:18px; padding:21px; }
+.dashboard-stat span { display:block; color:var(--muted); font-size:.85rem; }
+.dashboard-stat strong { display:block; font-size:2rem; letter-spacing:-.05em; margin-top:4px; }
+.dashboard-grid { display:grid; grid-template-columns:1.15fr .85fr; gap:18px; }
+.dashboard-panel h2 { font-size:1.35rem; letter-spacing:-.04em; margin-bottom:16px; }
+.dashboard-list { display:grid; gap:10px; }
+.dashboard-row { display:flex; align-items:center; justify-content:space-between; gap:12px; border:1px solid #e5ece3; border-radius:13px; padding:13px; }
+.dashboard-row strong { display:block; font-size:.92rem; }
+.dashboard-row small { display:block; color:var(--muted); margin-top:3px; }
+.dashboard-row button { border:0; background:#e8f3d8; color:#254b3e; border-radius:9px; padding:8px 10px; font-weight:800; cursor:pointer; white-space:nowrap; }
+.dashboard-form { display:grid; gap:10px; margin:12px 0 18px; }
+.dashboard-form input,.dashboard-form textarea,.dashboard-form select { width:100%; padding:11px; border:1px solid #d7e0d5; border-radius:10px; font:inherit; }
+.dashboard-form textarea { min-height:78px; resize:vertical; }
+.dashboard-empty { padding:15px; background:#f6f8f4; border-radius:12px; color:var(--muted); font-size:.9rem; }
+@media(max-width:700px) {
+  .nav-account { gap:6px; }
+  .nav-account button { padding:8px 10px; font-size:.82rem; }
+  .dashboard-stats { grid-template-columns:1fr; }
+  .dashboard-grid { grid-template-columns:1fr; }
+  .auth-modal { padding:22px; }
+}
+
+/* Dedicated Chapter 01 lesson view; existing portal styles remain unchanged. */
+.lesson-view { padding:24px 0 48px; background:var(--paper); }
+.lesson-view[hidden] { display:none; }
+.lesson-view-head { display:flex; align-items:center; justify-content:space-between; gap:16px; margin:0 auto 16px; }
+.lesson-view-head h2 { font-size:1.35rem; margin:0; letter-spacing:-.04em; }
+.lesson-back { border:1px solid #cbd8cc; background:#fff; color:var(--green-dark); border-radius:999px; padding:10px 16px; font:inherit; font-weight:800; cursor:pointer; }
+.lesson-frame { display:block; width:min(1160px,calc(100% - 40px)); height:calc(100vh - 150px); min-height:850px; margin:0 auto; border:1px solid var(--line); border-radius:18px; background:#fff; }
+@media(max-width:620px) { .lesson-view-head { align-items:flex-start; flex-direction:column; } .lesson-frame { width:calc(100% - 24px); min-height:780px; height:calc(100vh - 190px); } }
+
+
+.menu-toggle{display:none!important}
+@media(max-width:620px){.menu-toggle{display:inline-flex!important}}
+.page{min-height:calc(100vh - 76px)}
+[hidden]{display:none!important}
+.auth-page{display:grid;place-items:center;padding:56px 20px;background:var(--paper)}
+.auth-page .auth-modal{box-shadow:0 20px 60px #254b3e1f;border:1px solid var(--line)}
+.auth-message.error{background:#fbe9e5;color:#8a2f1f}
+.pw-tools{font-size:.78rem;font-weight:700;color:var(--green-dark);cursor:pointer;background:none;border:0;justify-self:start;padding:0;text-decoration:underline}
+.mod-card .done{background:#c9f36a;color:#254b3e}
+.mod-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:auto;padding-top:14px}
+.mod-actions .btn{padding:10px 16px;font-size:.88rem;cursor:pointer}
+.dashboard-welcome .dash-progress{background:#ffffff26}.dash-progress{height:10px;background:#e3ebe0;border-radius:99px;overflow:hidden;margin-top:10px}
+.dash-progress span{display:block;height:100%;background:#8ebd78;border-radius:99px;transition:width .4s}
+.reader-bar{display:flex;gap:10px;flex-wrap:wrap}
+.reader-bar button{border:1px solid #cbd8cc;background:#fff;color:var(--green-dark);border-radius:999px;padding:10px 16px;font:inherit;font-weight:800;cursor:pointer}
+.reader-bar .primary{background:var(--green-dark);color:#fff;border-color:var(--green-dark)}
+.reader-bar button:disabled{opacity:.45;cursor:not-allowed}
+.tbl{width:100%;border-collapse:collapse;font-size:.9rem}
+.tbl th,.tbl td{text-align:left;padding:10px;border-bottom:1px solid var(--line)}
+.tbl-wrap{overflow-x:auto}
+.who{font-weight:800;color:var(--green-dark);font-size:.9rem}
+.mod-actions .mod-ref{background:#fff;color:var(--green-dark);border:1px solid #cbd8cc}
+.ref-note{display:inline-block;margin-top:10px;font-size:.8rem;font-weight:800;color:#4d7a3d}
+.ref-box{max-height:92vh;overflow:auto;width:min(560px,100%)}
+.ref-box label{display:grid;gap:6px;font-weight:800;font-size:.9rem;margin-bottom:14px;color:var(--green-dark)}
+.ref-box textarea{width:100%;min-height:96px;border:1px solid var(--line);border-radius:14px;padding:12px;font:inherit;font-weight:400;resize:vertical;background:#fff;color:inherit}
+.ref-box textarea:focus{outline:2px solid #8ebd78}
+.ref-actions{display:flex;gap:12px;align-items:center;flex-wrap:wrap}
+.ref-actions .auth-submit{width:auto;padding-inline:26px}
+details.refs summary{cursor:pointer;font-weight:800;color:var(--green-dark)}
+details.refs div{margin-top:8px;max-width:360px;font-size:.82rem;line-height:1.5}
+
+/* ===== Added: theme toggle, About, Contact, policy cards ===== */
+:root{--card:#fff;--soft:#f0f4ed;--chip:#e8f3d8;--accent:#254b3e}
+[id]{scroll-margin-top:92px}
+.only-mobile{display:none}
+.theme-toggle{display:inline-grid;place-items:center;width:42px;height:42px;border-radius:50%;border:1px solid #cbd8cc;background:#fff;color:var(--ink);cursor:pointer;padding:0}
+.nav-account .theme-toggle{padding:0;width:42px;height:42px}
+.theme-toggle svg,.theme-row svg{width:19px;height:19px}
+.theme-row{align-items:center;gap:10px;background:none;border:0;padding:0;font-weight:650;font-size:.92rem;color:inherit;cursor:pointer}
+.theme-row .ti{display:inline-grid;place-items:center}
+.dashboard-actions .theme-toggle{width:40px;height:40px;border-radius:11px}
+@media(max-width:1290px){
+  .nav-links{display:none;position:absolute;left:14px;right:14px;top:calc(100% + 6px);background:#fff;border:1px solid var(--line);border-radius:17px;padding:18px;box-shadow:0 15px 30px #142b2b12;flex-direction:column;align-items:stretch;gap:14px;margin-left:0}
+  .nav-links.open{display:flex}
+  .nav-account{display:none}
+  .menu-toggle{display:inline-flex!important}
+  .only-mobile{display:inline-flex}
+}
+.pill-kicker{display:inline-block;border:1px solid #b9cfba;background:var(--chip);color:var(--accent);border-radius:999px;padding:7px 15px;font-size:.76rem;letter-spacing:.14em;text-transform:uppercase;font-weight:850;margin-bottom:18px}
+/* About */
+.about-grid{display:grid;grid-template-columns:1fr 1fr;gap:56px;align-items:start}
+.about-intro p{color:var(--muted);max-width:520px}
+.about-intro .hero-actions{margin-bottom:0}
+.glance{border:1px solid var(--line);border-radius:22px;background:var(--card);padding:6px 24px}
+.glance-row{display:flex;justify-content:space-between;gap:18px;padding:15px 0;border-bottom:1px solid var(--line);font-size:.93rem}
+.glance-row:last-child{border:0}
+.glance-row span{color:var(--muted)}
+.glance-row strong{text-align:right}
+.roadmap{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-top:44px}
+.road{border:1px solid var(--line);border-radius:18px;background:var(--card);padding:20px}
+.road small{font-weight:850;letter-spacing:.1em;font-size:.72rem;color:#587e60;text-transform:uppercase}
+.road h3{font-size:1.05rem;letter-spacing:-.03em;margin:8px 0 6px;line-height:1.25}
+.road p{font-size:.88rem;color:var(--muted);margin:0}
+/* Policies */
+.policy-head{max-width:760px;margin-bottom:40px}
+.policy-head p{color:var(--muted);font-size:1.05rem}
+.policy-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px;align-items:start}
+.policy-card{border:1px solid var(--line);border-radius:24px;background:var(--card);padding:28px}
+.policy-card h3{display:flex;align-items:center;gap:12px;font-size:1.2rem;letter-spacing:-.03em;margin:0 0 18px}
+.policy-card h3 svg{width:26px;height:26px;flex-shrink:0;color:var(--accent)}
+.policy-card ol{list-style:none;counter-reset:p;padding:0;margin:0;display:grid;gap:14px}
+.policy-card li{counter-increment:p;color:var(--muted);font-size:.95rem;line-height:1.65}
+.policy-card li:before{content:counter(p) ". ";font-weight:850;color:var(--ink)}
+.policy-card li strong{color:var(--ink)}
+/* Contact */
+.contact-grid{display:grid;grid-template-columns:.9fr 1.1fr;gap:48px;align-items:start}
+.contact-intro p{color:var(--muted);max-width:470px}
+.contact-cards{display:grid;gap:12px;margin-top:26px}
+.contact-card{display:flex;gap:15px;align-items:flex-start;border:1px solid var(--line);border-radius:18px;background:var(--card);padding:17px 18px}
+.contact-ico{width:44px;height:44px;border-radius:13px;background:var(--chip);color:var(--accent);display:grid;place-items:center;flex-shrink:0}
+.contact-ico svg{width:21px;height:21px}
+.contact-card strong{display:block;font-size:.95rem}
+.contact-card p{font-size:.88rem;color:var(--muted);margin:2px 0 0}
+.contact-card a{font-size:.9rem;color:var(--accent);font-weight:800;word-break:break-all}
+.contact-form{border:1px solid var(--line);border-radius:24px;background:var(--card);padding:28px;display:grid;gap:14px}
+.contact-form h3{font-size:1.4rem;letter-spacing:-.04em;margin:0}
+.contact-form>p{color:var(--muted);font-size:.9rem;margin:-6px 0 2px}
+.contact-form label{display:grid;gap:6px;font-size:.85rem;font-weight:800}
+.contact-form input,.contact-form select,.contact-form textarea{width:100%;border:1px solid var(--line);border-radius:11px;padding:12px 13px;font:inherit;font-weight:500;background:var(--paper);color:var(--ink);outline-color:#63816a}
+.contact-form textarea{min-height:120px;resize:vertical}
+.contact-form .row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.contact-form .auth-submit{width:100%}
+@media(max-width:850px){
+  .about-grid,.contact-grid,.policy-grid{grid-template-columns:1fr}
+  .about-grid{gap:30px}.contact-grid{gap:30px}
+  .roadmap{grid-template-columns:1fr 1fr}
+}
+@media(max-width:620px){
+  .roadmap{grid-template-columns:1fr}
+  .contact-form .row{grid-template-columns:1fr}
+  .policy-card,.contact-form{padding:22px}
+}
+
+/* ===== Dark theme ===== */
+[data-theme="dark"]{color-scheme:dark;--ink:#e8f0eb;--muted:#9fb3a9;--paper:#0a1512;--white:#0f1e1a;--line:#22382f;--card:#10201c;--soft:#0c1a16;--chip:#1c3429;--accent:#c9f36a}
+[data-theme="dark"] header{background:rgba(10,21,18,.92);border-color:#22382f}
+[data-theme="dark"] .nav-links{color:#b9cdc3}
+[data-theme="dark"] .nav-links a:hover{color:#fff}
+[data-theme="dark"] .theme-toggle,[data-theme="dark"] .nav-account button,[data-theme="dark"] .menu-toggle,[data-theme="dark"] .dashboard-actions button,[data-theme="dark"] .reader-bar button,[data-theme="dark"] .lesson-back,[data-theme="dark"] .mod-actions .mod-ref{background:#10201c;border-color:#2a4339;color:var(--ink)}
+[data-theme="dark"] .nav-account .signup-trigger,[data-theme="dark"] .btn-primary,[data-theme="dark"] .nav-cta,[data-theme="dark"] .auth-submit,[data-theme="dark"] .dashboard-actions .logout-button,[data-theme="dark"] .reader-bar .primary{background:var(--green);color:#10281f;border-color:var(--green)}
+[data-theme="dark"] .btn-outline{border-color:#35514a}
+[data-theme="dark"] .btn-outline:hover{background:#16302a}
+[data-theme="dark"] .eyebrow{background:#1a2f27;color:#c9f36a}
+[data-theme="dark"] .dot{background:#c9f36a}
+[data-theme="dark"] h1 span{color:#8fc59c}
+[data-theme="dark"] .trust-row{color:#a9c1b5}
+[data-theme="dark"] .trust-row span:before{background:#1f382e;color:#c9f36a}
+[data-theme="dark"] .hero-art{background:#12281f}
+[data-theme="dark"] .hero-art:before{background:#1b3a2d}
+[data-theme="dark"] .hero-art:after{background:#3a2c22}
+[data-theme="dark"] .art-window,[data-theme="dark"] .stat-pill{background:#10201c;border-color:#25402f;box-shadow:0 24px 60px #0006}
+[data-theme="dark"] .window-top{background:#0c1a16;border-color:#22382f}
+[data-theme="dark"] .window-top i{background:#2a4339}
+[data-theme="dark"] .window-title,[data-theme="dark"] .progress-card small{color:#8ea59a}
+[data-theme="dark"] .art-label,[data-theme="dark"] .kicker,[data-theme="dark"] .chapter,[data-theme="dark"] .road small{color:#8fc59c}
+[data-theme="dark"] .progress-card{border-color:#25402f}
+[data-theme="dark"] .progress-icon,[data-theme="dark"] .lesson-tag,[data-theme="dark"] .feature .feature-icon{background:#1c3429}
+[data-theme="dark"] .lesson-tag{color:#c9f36a}
+[data-theme="dark"] .progress-bar{background:#1f332b}
+[data-theme="dark"] .section-white{background:#0e1c18}
+[data-theme="dark"] .text-link,[data-theme="dark"] .lesson a{color:#c9f36a}
+[data-theme="dark"] .text-link{border-color:#4c7a5c}
+[data-theme="dark"] .feature,[data-theme="dark"] .lesson{background:#10201c}
+[data-theme="dark"] .lesson:hover{box-shadow:0 18px 35px #0008}
+[data-theme="dark"] .pill-kicker{border-color:#2f5444}
+[data-theme="dark"] .cta-panel{background:#16352a}
+[data-theme="dark"] footer{background:#08110e}
+[data-theme="dark"] .footer-bottom{color:#7f968b}
+[data-theme="dark"] .auth-modal,[data-theme="dark"] .ref-box textarea{background:#10201c}
+[data-theme="dark"] .auth-field input,[data-theme="dark"] .dashboard-form input,[data-theme="dark"] .dashboard-form textarea,[data-theme="dark"] .dashboard-form select{background:#0a1512;border-color:#2a4339;color:var(--ink)}
+[data-theme="dark"] .auth-message{background:#1a2f27;color:#c9f36a}
+[data-theme="dark"] .auth-message.error{background:#3a1d18;color:#ffb4a5}
+[data-theme="dark"] .auth-switch button,[data-theme="dark"] .pw-tools,[data-theme="dark"] .who,[data-theme="dark"] .ref-box label,[data-theme="dark"] details.refs summary{color:#c9f36a}
+[data-theme="dark"] .dashboard-shell,[data-theme="dark"] .lesson-view{background:#0a1512}
+[data-theme="dark"] .dashboard-stat,[data-theme="dark"] .dashboard-panel{background:#10201c}
+[data-theme="dark"] .dashboard-row{border-color:#25402f}
+[data-theme="dark"] .dashboard-row button{background:#1c3429;color:#c9f36a}
+[data-theme="dark"] .dashboard-empty{background:#0a1512}
+[data-theme="dark"] .dash-progress{background:#1f332b}
+@media(max-width:1290px){[data-theme="dark"] .nav-links{background:#10201c;border-color:#22382f}}
+.dashboard-shell{min-height:calc(100vh - 76px);padding:34px 0 70px}
+
+/* Articles, active nav pill, footer icon */
+.nav-links{gap:4px}
+.nav-links a{padding:8px 12px;border-radius:999px}
+.nav-links a.active{background:var(--chip);color:var(--accent)}
+.chips{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:26px}
+.chip{border:1px solid var(--line);background:var(--card);color:var(--ink);border-radius:999px;padding:8px 16px;font-weight:750;font-size:.88rem;cursor:pointer}
+.chip.on{background:var(--green-dark);color:#fff;border-color:var(--green-dark)}
+.art-card[hidden]{display:none}
+.art-open{margin-top:auto;padding:13px 0 0;background:none;border:0;text-align:left;font-weight:800;font-size:.88rem;color:#315e46;cursor:pointer}
+.art-open span{padding-left:5px}
+.article-modal{width:min(100%,680px);max-height:90vh;overflow:auto}
+.article-modal h2{font-size:clamp(1.6rem,4vw,2.2rem);margin:6px 30px 16px 0}
+.article-body li{margin:9px 0}
+.social{width:46px;height:46px;border-radius:50%;border:1px solid var(--line);display:inline-grid;place-items:center;margin-top:16px;color:var(--ink)}
+.social svg{width:19px;height:19px}
+.social:hover{background:var(--chip)}
+@media(max-width:1290px){.nav-links a{padding:4px 0;border-radius:0}.nav-links a.active{background:none}}
+[data-theme="dark"] .chip.on{background:var(--green);color:#10281f;border-color:var(--green)}
+[data-theme="dark"] .art-open{color:#c9f36a}
+[data-theme="dark"] .nav-links a.active{color:#c9f36a}
+
+.nav-links a,.nav-account button,.brand-text span{white-space:nowrap}
+/* Added: articles, brand tagline, active nav pill, social button */
+.brand-text{display:grid;line-height:1.15}
+.brand-text small{font-size:.64rem;font-weight:700;letter-spacing:.04em;color:var(--muted)}
+@media(max-width:620px){.brand-text small{display:none}.brand-text span{white-space:normal;font-size:.8rem}.brand{min-width:0}}
+.nav-links{gap:6px}
+.nav-links a{padding:9px 16px;border-radius:999px}
+.nav-links a.active{background:var(--chip);color:var(--accent)}
+[data-theme="dark"] .nav-links a.active{background:#1c3429;color:#c9f36a}
+</style>
+</head>
+<body>
+
+<header id="siteHeader">
+ <div class="container nav">
+  <a class="brand" href="#home" data-view="home"><span class="brand-mark">S</span><span class="brand-text"><span>SYSTEM INTEGRATION ARCHITECTURE 1</span><small>Mastering Systems Integration and Architecture</small></span></a>
+  <button class="menu-toggle" id="menuToggle" aria-label="Toggle navigation" aria-expanded="false">☰</button>
+  <nav class="nav-links" id="navLinks" aria-label="Main navigation">
+   <a href="#home" data-view="home">Home</a>
+   <a href="#register" data-view="register" data-guest>Student Registration</a>
+   <a href="#about" data-scroll="about">About</a>
+   <a href="#contact" data-scroll="contact">Contact Us</a>
+   <a href="#login" data-view="login" data-guest class="only-mobile">Students Login</a>
+   <a href="#admin-login" data-view="adminLogin" data-guest class="only-mobile">Admin Login</a>
+   <a href="#modules" data-view="dash" data-member class="only-mobile" hidden>My Modules</a>
+   <a href="#logout" data-logout data-member class="only-mobile" hidden>Log out</a>
+   <button type="button" class="theme-row only-mobile" data-theme-toggle><span class="ti"></span><span>Switch light / dark mode</span></button>
+  </nav>
+  <div class="nav-account">
+   <button type="button" class="theme-toggle" data-theme-toggle><span class="ti"></span></button>
+   <span id="navUser" class="who" hidden></span>
+   <button type="button" data-guest data-view="login">Students Login</button>
+   <button type="button" class="signup-trigger" data-guest data-view="adminLogin">Admin Login</button>
+   <button type="button" class="signup-trigger" id="navCta" data-view="register" hidden>Sign up</button>
+   <button type="button" id="navLogout" hidden>Log out</button>
+  </div>
+ </div>
+</header>
+
+<main>
+<!-- HOME -->
+<div id="viewHome" class="page">
+<section class="hero">
+ <div class="container hero-grid">
+  <div>
+   <div class="eyebrow"><span class="dot"></span>Your Systems Integration Journey Starts Here</div>
+   <h1>SYSTEM INTEGRATION<br>ARCHITECTURE <span>1</span></h1>
+   <p class="hero-copy">Systems Integration and Architecture 1 (SIA 1). Go beyond building isolated applications. Learn how separate systems connect, exchange data, and work together through sound architecture.</p>
+   <div class="hero-actions">
+    <a class="btn btn-primary" href="#chapters">Explore chapters <span>↗</span></a>
+    <a class="btn btn-outline" href="#chapters">View course outline</a>
+   </div>
+   <div class="trust-row"><span>Student-centered</span><span>Project-based</span><span>Industry-relevant</span></div>
+  </div>
+  <div class="hero-art" aria-label="Illustration of a systems integration learning dashboard">
+   <div class="stat-pill stat-two"><strong>120</strong>guided lessons</div>
+   <div class="art-window">
+    <div class="window-top"><i></i><i></i><i></i><span class="window-title">YOUR LEARNING SPACE</span></div>
+    <div class="art-content">
+     <div class="art-label">Current learning path</div><div class="art-heading">From separate systems<br>to one solution.</div>
+     <div class="progress-card"><div class="progress-icon">⌘</div><div style="flex:1"><strong>Know your systems</strong><small>Map what needs to connect</small><div class="progress-bar"><span style="width:76%"></span></div></div></div>
+     <div class="progress-card"><div class="progress-icon">◇</div><div style="flex:1"><strong>Connect and exchange</strong><small>Turn interfaces into integrations</small><div class="progress-bar"><span style="width:54%"></span></div></div></div>
+     <div class="progress-card"><div class="progress-icon">✓</div><div style="flex:1"><strong>Architecture by design</strong><small>Build systems that scale and last</small><div class="progress-bar"><span style="width:68%"></span></div></div></div>
+    </div>
+   </div>
+   <div class="stat-pill stat-one"><strong>15</strong>core chapters</div>
+  </div>
+ </div>
+</section>
+
+<section class="section section-white" id="approach">
+ <div class="container why-grid">
+  <div class="why-intro">
+   <div class="kicker">Why it matters</div>
+   <h2>Systems run alone.<br>Architecture makes them work together.</h2>
+   <p>Modern organizations depend on many systems that must share data and work as one. Systems integration and architecture give you the methods to connect them reliably—balancing interoperability, security, performance, and change.</p>
+   <a class="text-link" href="#chapters">Our learning approach ↗</a>
+  </div>
+  <div class="feature-grid">
+   <article class="feature"><div class="feature-icon">◎</div><h3>Business needs first</h3><p>Start from what the organization needs its systems to achieve.</p></article>
+   <article class="feature"><div class="feature-icon">⌘</div><h3>Systems thinking</h3><p>See how applications, data, interfaces, and infrastructure connect.</p></article>
+   <article class="feature"><div class="feature-icon">✳</div><h3>Practice with purpose</h3><p>Use cases, diagrams, and projects turn theory into judgment.</p></article>
+   <article class="feature"><div class="feature-icon">◈</div><h3>Architecture by design</h3><p>Build scalability, security, and maintainability in from the start.</p></article>
+  </div>
+ </div>
+</section>
+
+<section class="section" id="chapters">
+ <div class="container">
+  <div class="section-head">
+   <div><div class="kicker">Featured lessons</div><h2>Start with the essentials.</h2></div>
+   <a class="text-link" href="#all-chapters" id="allChaptersLink">View all chapters ↗</a>
+  </div>
+  <div class="lesson-grid" id="all-chapters">
+   <article class="lesson">
+    <div class="lesson-top"><span class="chapter">CHAPTER 01</span><span class="lesson-tag">Foundations</span></div>
+    <h3>Introduction to Systems Integration and Architecture</h3>
+    <p>Understand what systems integration is, why organizations need it, and how architecture guides it.</p>
+    <a href="#chapters" class="lesson-link" data-lesson="Introduction to Systems Integration and Architecture">Open lesson <span>↗</span></a>
+   </article>
+   <article class="lesson">
+    <div class="lesson-top"><span class="chapter">CHAPTER 02</span><span class="lesson-tag">Integration</span></div>
+    <h3>Integration Approaches and Patterns</h3>
+    <p>Compare point-to-point, hub-and-spoke, middleware, and service-based ways of connecting systems.</p>
+    <a href="#chapters" class="lesson-link" data-lesson="Integration Approaches and Patterns">Open lesson <span>↗</span></a>
+   </article>
+   <article class="lesson">
+    <div class="lesson-top"><span class="chapter">CHAPTER 03</span><span class="lesson-tag">Interfaces</span></div>
+    <h3>APIs and Web Services</h3>
+    <p>Explore how REST and SOAP services and data formats like JSON and XML let systems exchange data.</p>
+    <a href="#chapters" class="lesson-link" data-lesson="APIs and Web Services">Open lesson <span>↗</span></a>
+   </article>
+  </div>
+ </div>
+</section>
+
+<section class="section section-white" id="articles">
+ <div class="container">
+  <div class="section-head">
+   <div><div class="kicker">Learning articles</div><h2>Short reads for each chapter.</h2></div>
+   <p>Quick explainers that recap key ideas from the SIA 1 modules. Use them to review before a quiz or exam.</p>
+  </div>
+  <div class="chips" role="group" aria-label="Filter articles">
+   <button type="button" class="chip on" data-filter="all">All</button>
+   <button type="button" class="chip" data-filter="Foundations">Foundations</button>
+   <button type="button" class="chip" data-filter="Requirements">Requirements</button>
+   <button type="button" class="chip" data-filter="Architecture">Architecture</button>
+   <button type="button" class="chip" data-filter="Process">Process</button>
+  </div>
+  <div class="lesson-grid" id="artGrid">
+   <article class="lesson art-card" data-tag="Foundations">
+    <div class="lesson-top"><span class="chapter">ARTICLE 01</span><span class="lesson-tag">Foundations</span></div>
+    <h3>Four ways to connect systems</h3>
+    <p>Chapter 01 · Methods of system integration · 4 min read</p>
+    <button type="button" class="art-open" data-article="0">Read article <span>↗</span></button>
+   </article>
+   <article class="lesson art-card" data-tag="Foundations">
+    <div class="lesson-top"><span class="chapter">ARTICLE 02</span><span class="lesson-tag">Foundations</span></div>
+    <h3>CRM vs ERP: same company, different jobs</h3>
+    <p>Chapter 01 · Systems and integration · 3 min read</p>
+    <button type="button" class="art-open" data-article="1">Read article <span>↗</span></button>
+   </article>
+   <article class="lesson art-card" data-tag="Requirements">
+    <div class="lesson-top"><span class="chapter">ARTICLE 03</span><span class="lesson-tag">Requirements</span></div>
+    <h3>Interfaces and messages: how systems talk</h3>
+    <p>Chapter 02 · Systems requirements · 3 min read</p>
+    <button type="button" class="art-open" data-article="2">Read article <span>↗</span></button>
+   </article>
+   <article class="lesson art-card" data-tag="Architecture">
+    <div class="lesson-top"><span class="chapter">ARTICLE 04</span><span class="lesson-tag">Architecture</span></div>
+    <h3>What makes an architecture good? Quality attributes</h3>
+    <p>Chapter 03 · System architecture for integration · 4 min read</p>
+    <button type="button" class="art-open" data-article="3">Read article <span>↗</span></button>
+   </article>
+   <article class="lesson art-card" data-tag="Architecture">
+    <div class="lesson-top"><span class="chapter">ARTICLE 05</span><span class="lesson-tag">Architecture</span></div>
+    <h3>Architectural styles at a glance</h3>
+    <p>Chapter 03 · Architectural style · 3 min read</p>
+    <button type="button" class="art-open" data-article="4">Read article <span>↗</span></button>
+   </article>
+   <article class="lesson art-card" data-tag="Process">
+    <div class="lesson-top"><span class="chapter">ARTICLE 06</span><span class="lesson-tag">Process</span></div>
+    <h3>The six steps of a systems integration project</h3>
+    <p>Chapter 04 · Integration process · 3 min read</p>
+    <button type="button" class="art-open" data-article="5">Read article <span>↗</span></button>
+   </article>
+  </div>
+ </div>
+</section>
+
+<section class="section" id="about">
+ <div class="container">
+  <div class="about-grid">
+   <div class="about-intro">
+    <div class="kicker">About this course</div>
+    <h2>From separate systems to one working solution.</h2>
+    <p>Systems Integration and Architecture 1 (IT PC 3) moves you beyond building isolated applications. You learn what systems and information are, how to gather and document requirements, how architecture shapes integration, and how a real integration project is run, from requirements gathering to maintenance.</p>
+    <div class="hero-actions">
+     <a class="btn btn-primary" href="#chapters">Browse the modules <span>↗</span></a>
+     <a class="btn btn-outline" href="#policies" data-scroll="policies">Classroom policies</a>
+    </div>
+   </div>
+   <div class="glance" aria-label="Course at a glance">
+    <div class="glance-row"><span>Course</span><strong>IT PC 3 · Systems Integration and Architecture 1</strong></div>
+    <div class="glance-row"><span>Program</span><strong>BS Information Technology</strong></div>
+    <div class="glance-row"><span>Year level</span><strong>Second Year</strong></div>
+    <div class="glance-row"><span>Campus</span><strong>NVSU · Bayombong</strong></div>
+    <div class="glance-row"><span>Modules</span><strong>4 instructional modules · Weeks 1–8</strong></div>
+   </div>
+  </div>
+  <div class="roadmap" aria-label="Learning roadmap">
+   <article class="road"><small>Weeks 1–2 · Chapter 01</small><h3>Introduction to Systems Integration</h3><p>What systems are, and why and how organizations integrate them.</p></article>
+   <article class="road"><small>Weeks 3–4 · Chapter 02</small><h3>Systems Requirements</h3><p>Gathering requirements, interfaces, messages, EAI and EDI.</p></article>
+   <article class="road"><small>Weeks 5–6 · Chapter 03</small><h3>System Architecture for Integration</h3><p>Architectural styles, quality attributes and architecture models.</p></article>
+   <article class="road"><small>Weeks 7–8 · Chapter 04</small><h3>Integration Process</h3><p>The six-step integration process and project integration management.</p></article>
+  </div>
+ </div>
+</section>
+
+<section class="section section-white" id="policies">
+ <div class="container">
+  <div class="policy-head">
+   <div class="pill-kicker">Classroom policies</div>
+   <h2>Guidelines for success in this course.</h2>
+   <p>Please review and adhere to these policies to ensure a productive learning environment for everyone.</p>
+  </div>
+  <div class="policy-grid">
+   <article class="policy-card">
+    <h3><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg> A. Attendance and Punctuality</h3>
+    <ol>
+     <li>Students who will be absent must secure an admission slip from the College Guidance Coordinator and present it to the instructor before returning to class. Attach a medical certificate for illness-related absences.</li>
+     <li>Excused absences for official university activities may qualify students to complete missed examinations, quizzes, and class activities.</li>
+     <li>Absences exceeding 20% of required class hours may result in being dropped. If 60% or more are unexcused, the student may receive a grade of 5.00.</li>
+     <li>Students must enter class within the first 15 minutes; later arrivals may be considered absent.</li>
+    </ol>
+   </article>
+   <article class="policy-card">
+    <h3><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><path d="m9 15 2 2 4-4"/></svg> B. Quizzes and Examinations</h3>
+    <ol>
+     <li>Two long examinations are scheduled during the semester: midterm and final examinations. Follow the Registrar's schedule.</li>
+     <li>For a missed examination, secure an excuse slip and discuss rescheduling with the instructor.</li>
+     <li>Quizzes may be announced or unannounced. Missed quizzes and activities follow the Student Handbook.</li>
+    </ol>
+   </article>
+   <article class="policy-card">
+    <h3><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20.38 3.46 16 2a4 4 0 0 1-8 0L3.62 3.46a2 2 0 0 0-1.34 2.23l.58 3.47a1 1 0 0 0 .99.84H6v10c0 1.1.9 2 2 2h8a2 2 0 0 0 2-2V10h2.15a1 1 0 0 0 .99-.84l.58-3.47a2 2 0 0 0-1.34-2.23z"/></svg> C. Uniform and Dress Code</h3>
+    <ol>
+     <li>Uniform requirements are implemented according to the Student Handbook.</li>
+    </ol>
+   </article>
+   <article class="policy-card">
+    <h3><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="m9 12 2 2 4-4"/></svg> D. Other Classroom Rules</h3>
+    <ol>
+     <li><strong>Academic integrity:</strong> Submitted work must be original or clearly acknowledge others' work. Cheating, fabrication, plagiarism, sabotage, and other dishonest academic activities are subject to university rules.</li>
+     <li><strong>Responsible use of AI:</strong> Use clear prompts, verify facts and numbers, take ownership of the final work, and disclose or cite AI assistance according to APA Style 7th Edition when required. Use AI thoughtfully rather than relying on it entirely.</li>
+     <li><strong>Consultations:</strong> Visit the instructor during the stated consultation hours and avoid transactions during break time or lunch whenever possible. Be courteous to faculty and staff.</li>
+     <li><strong>Cleanliness and orderliness:</strong> Keep the classroom clean before and after class and practice CLAYGO (Clean As You Go).</li>
+    </ol>
+   </article>
+  </div>
+ </div>
+</section>
+
+<section class="section" id="contact">
+ <div class="container contact-grid">
+  <div class="contact-intro">
+   <div class="kicker">Contact us</div>
+   <h2>Questions about SIA 1? Reach out.</h2>
+   <p>Need help with a module, an absence, or a missed exam? Send your instructor a message, or use the details below.</p>
+   <div class="contact-cards">
+    <div class="contact-card"><div class="contact-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-10 7L2 7"/></svg></div><div><strong>Email your instructor</strong><a href="mailto:LaarnieBartolome@gmail.com">LaarnieBartolome@gmail.com</a></div></div>
+    <div class="contact-card"><div class="contact-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></div><div><strong>Consultation hours</strong><p>Visit during the stated consultation hours and avoid break time or lunch whenever possible.</p></div></div>
+    <div class="contact-card"><div class="contact-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><path d="m9 15 2 2 4-4"/></svg></div><div><strong>Absent or missed an exam?</strong><p>Get an admission or excuse slip first, then discuss makeup arrangements with your instructor.</p></div></div>
+    <div class="contact-card"><div class="contact-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 10c0 6-8 12-8 12S4 16 4 10a8 8 0 0 1 16 0z"/><circle cx="12" cy="10" r="3"/></svg></div><div><strong>Where to find us</strong><p>College of Information Technology Education, Nueva Vizcaya State University, Bayombong Campus</p></div></div>
+   </div>
+  </div>
+  <div class="contact-form" id="contactForm">
+   <h3>Send a message</h3>
+   <p>This opens your email app with your message ready to send.</p>
+   <div class="auth-message" id="cfNote" role="status"></div>
+   <div class="row">
+    <label>Full name<input id="cfName" type="text" maxlength="80" autocomplete="name" placeholder="Your full name"></label>
+    <label>Student ID (optional)<input id="cfId" type="text" maxlength="30" placeholder="e.g. 2026-12345"></label>
+   </div>
+   <label>Topic
+    <select id="cfTopic">
+     <option>Module or lesson question</option>
+     <option>Absence or admission slip</option>
+     <option>Exam or quiz rescheduling</option>
+     <option>Portal or account problem</option>
+     <option>Other</option>
+    </select>
+   </label>
+   <label>Message<textarea id="cfMsg" maxlength="1500" placeholder="How can your instructor help?"></textarea></label>
+   <button class="auth-submit" id="cfSend" type="button">Send message</button>
+  </div>
+ </div>
+</section>
+
+<section class="cta-section">
+ <div class="container">
+  <div class="cta-panel">
+   <div><div class="kicker" style="color:#c9f36a">Ready when you are</div><h2>Connect Systems. Integrate Solutions.</h2><p>Pick a chapter, track your learning, and explore how systems work together.</p></div>
+   <a class="btn" href="#chapters">Begin learning <span>↗</span></a>
+  </div>
+ </div>
+</section>
+
+
+</div>
+
+<!-- REGISTER -->
+<div id="viewRegister" class="page auth-page" hidden>
+ <section class="auth-modal">
+  <div class="auth-brand"><span class="brand-mark">S</span><span>SYSTEM INTEGRATION ARCHITECTURE 1</span></div>
+  <h2>Create your student account.</h2>
+  <p class="auth-subtitle">Step 1: register. After that you can log in and open your SIA 1 modules.</p>
+  <div class="auth-message" id="regMsg" role="status"></div>
+  <form class="auth-form" id="regForm" novalidate>
+   <label class="auth-field">Full name<input id="regName" type="text" maxlength="80" autocomplete="name" placeholder="Your full name" required></label>
+   <label class="auth-field">Student ID Number<input id="regId" type="text" maxlength="30" autocomplete="username" placeholder="e.g. 2026-12345" required></label>
+   <label class="auth-field">Create password<input id="regPw" type="password" autocomplete="new-password" placeholder="At least 6 characters" required></label>
+   <label class="auth-field">Confirm password<input id="regPw2" type="password" autocomplete="new-password" placeholder="Re-enter your password" required></label>
+   <button type="button" class="pw-tools" data-showpw="regPw,regPw2">Show / hide passwords</button>
+   <button class="auth-submit" type="button">Create account</button>
+  </form>
+  <p class="auth-switch">Already registered? <button type="button" data-view="login">Log in</button></p>
+ </section>
+</div>
+
+<!-- STUDENT LOGIN -->
+<div id="viewLogin" class="page auth-page" hidden>
+ <section class="auth-modal">
+  <div class="auth-brand"><span class="brand-mark">S</span><span>SYSTEM INTEGRATION ARCHITECTURE 1</span></div>
+  <h2>Students login.</h2>
+  <p class="auth-subtitle">Step 2: log in to open your learning modules.</p>
+  <div class="auth-message" id="loginMsg" role="status"></div>
+  <form class="auth-form" id="loginForm" novalidate>
+   <label class="auth-field">Student ID Number<input id="loginId" type="text" maxlength="30" autocomplete="username" placeholder="Enter your ID number" required></label>
+   <label class="auth-field">Password<input id="loginPw" type="password" autocomplete="current-password" placeholder="Enter your password" required></label>
+   <button type="button" class="pw-tools" data-showpw="loginPw">Show / hide password</button>
+   <button class="auth-submit" type="button">Log in</button>
+  </form>
+  <p class="auth-note">Example account for testing: <strong>STUDENT01</strong> / <strong>sia12345</strong> <button type="button" class="pw-tools" id="demoFill" style="margin-left:6px">Fill it in</button></p>
+  <p class="auth-switch">New student? <button type="button" data-view="register">Register here</button></p>
+ </section>
+</div>
+
+<!-- ADMIN LOGIN -->
+<div id="viewAdminLogin" class="page auth-page" hidden>
+ <section class="auth-modal">
+  <div class="auth-brand"><span class="brand-mark">S</span><span>SYSTEM INTEGRATION ARCHITECTURE 1</span></div>
+  <h2>Admin login.</h2>
+  <p class="auth-subtitle">Instructor access to see registered students and their progress.</p>
+  <div class="auth-message" id="adminMsg" role="status"></div>
+  <form class="auth-form" id="adminForm" novalidate>
+   <label class="auth-field">Admin ID<input id="adminId" type="text" autocomplete="username" required></label>
+   <label class="auth-field">Password<input id="adminPw" type="password" autocomplete="current-password" required></label>
+   <button class="auth-submit" type="button">Log in as admin</button>
+  </form>
+  <p class="auth-note">Demo admin: <strong>ADMIN001</strong> / <strong>Admin123!</strong></p>
+ </section>
+</div>
+
+<!-- STUDENT DASHBOARD -->
+<div id="viewDash" class="dashboard-shell" hidden>
+ <div class="container">
+
+  <div id="dashHome">
+   <div class="dashboard-welcome">
+    <div class="kicker">SIA 1 · Your learning space</div>
+    <h1>Welcome back, <span id="wName"></span>.</h1>
+    <p id="wSub"></p>
+    <div class="dash-progress"><span id="wBar" style="width:0"></span></div>
+   </div>
+   <div class="dashboard-stats">
+    <div class="dashboard-stat"><span>Modules completed</span><strong id="stDone">0 / 3</strong></div>
+    <div class="dashboard-stat"><span>Overall progress</span><strong id="stPct">0%</strong></div>
+    <div class="dashboard-stat"><span>Last opened</span><strong id="stLast" style="font-size:1.05rem;line-height:1.3">None yet</strong></div>
+   </div>
+   <div class="section-head" style="margin-bottom:18px"><div><div class="kicker">Modules</div><h2 style="font-size:2rem">Pick a chapter to study.</h2></div></div>
+   <div class="lesson-grid" id="modGrid"></div>
+  </div>
+
+  <div id="dashReader" hidden>
+   <div class="lesson-view-head" style="width:100%;padding:0">
+    <h2 id="readerTitle"></h2>
+    <div class="reader-bar">
+     <button type="button" id="rBack">← All modules</button>
+     <button type="button" id="rPrev">‹ Previous</button>
+     <button type="button" id="rNext">Next ›</button>
+     <button type="button" class="primary" id="rDone">Mark as complete</button>
+    </div>
+   </div>
+   <iframe class="lesson-frame" id="readerFrame" style="width:100%" title="Module content" sandbox="allow-scripts allow-popups"></iframe>
+  </div>
+ </div>
+</div>
+
+<!-- ADMIN DASHBOARD -->
+<div id="viewAdmin" class="dashboard-shell" hidden>
+ <div class="container">
+  <div class="dashboard-welcome"><div class="kicker">Instructor</div><h1>Registered students.</h1><p id="admCount"></p></div>
+  <div class="dashboard-panel"><div class="tbl-wrap" id="admTable"></div></div>
+ </div>
+</div>
+</main>
+
+<footer>
+ <div class="container">
+  <div class="footer-grid">
+   <div class="footer-brand">
+    <a class="brand" href="#home"><span class="brand-mark">S</span><span class="brand-text"><span>SYSTEM INTEGRATION ARCHITECTURE 1</span><small>Mastering Systems Integration and Architecture</small></span></a>
+    <p>A practical learning companion for SIA 1 students—made to turn concepts into confident practice.</p>
+   </div>
+   <div><h3>Explore</h3><ul><li><a href="#chapters">Course outline</a></li><li><a href="#chapters">All chapters</a></li><li><a href="#approach">Learning approach</a></li><li><a href="#articles" data-scroll="articles">Learning articles</a></li><li><a href="#about" data-scroll="about">About the course</a></li></ul></div>
+   <div><h3>Connect</h3><ul><li><a href="mailto:LaarnieBartolome@gmail.com">LaarnieBartolome@gmail.com</a></li><li><a href="#contact" data-scroll="contact">Contact us</a></li><li><a href="#policies" data-scroll="policies">Classroom policies</a></li></ul><a class="social" href="mailto:LaarnieBartolome@gmail.com" aria-label="Email the instructor"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-10 7L2 7"/></svg></a></div>
+  </div>
+  <div class="footer-bottom"><span>© 2026 SYSTEM INTEGRATION ARCHITECTURE 1 · Built for learning, designed for growth.</span><a href="#home">Back to top ↑</a></div>
+ </div>
+</footer>
+
+<div class="auth-overlay" id="articleOverlay" role="dialog" aria-modal="true" aria-labelledby="artTitle">
+ <section class="auth-modal article-modal">
+  <button class="auth-close" id="artClose" type="button" aria-label="Close article">×</button>
+  <div class="kicker" id="artKicker"></div>
+  <h2 id="artTitle"></h2>
+  <div class="article-body" id="artBody"></div>
+ </section>
+</div>
+<div class="auth-overlay" id="successOverlay" role="alertdialog" aria-modal="true" aria-labelledby="okTitle">
+ <section class="auth-modal" style="text-align:center">
+  <div style="width:68px;height:68px;border-radius:50%;background:#c9f36a;color:#254b3e;display:grid;place-items:center;font-size:2rem;font-weight:900;margin:6px auto 16px">✓</div>
+  <h2 id="okTitle">Your account has been created!</h2>
+  <p class="auth-subtitle">Welcome, <strong id="okName"></strong>. You can now log in.</p>
+  <button class="auth-submit" id="okLogin" type="button" style="width:100%">Log in now</button>
+ </section>
+</div>
+
+<div class="auth-overlay" id="reflectOverlay" role="dialog" aria-modal="true" aria-labelledby="refTitle">
+ <section class="auth-modal ref-box">
+  <div class="kicker" id="refKicker">Reflection</div>
+  <h2 id="refTitle"></h2>
+  <p class="auth-subtitle" id="refSub"></p>
+  <label>What is the most important idea you learned in this chapter?<textarea id="ref1" maxlength="1200" placeholder="Write it in your own words…"></textarea></label>
+  <label><span id="refQ2"></span><textarea id="ref2" maxlength="1200" placeholder="Share your thoughts…"></textarea></label>
+  <div class="auth-message" id="refMsg" role="status"></div>
+  <div class="ref-actions"><button class="auth-submit" id="refSave" type="button">Save reflection</button><button class="pw-tools" id="refSkip" type="button">Skip for now</button></div>
+ </section>
+</div>
+
+<div class="notice" id="notice" role="status" aria-live="polite"></div>
+
+<script>
+const DOCS = {"ch1":"<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n<meta charset=\"UTF-8\">\n<meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">\n<meta name=\"description\" content=\"Web-optimized learning module for IT PC 3: Introduction to Systems Integration.\">\n<title>Chapter 1 \u2013 Introduction to Systems Integration | IT PC 3<\/title>\n<style>\n:root{--ink:#1f2937;--muted:#64748b;--brand:#245b86;--brand2:#e8f2f8;--paper:#fff;--bg:#f4f7fb;--line:#dbe3ec;--gold:#fff5d9;--green:#eaf7ef}\n*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.65 system-ui,-apple-system,\"Segoe UI\",sans-serif}\nheader{background:linear-gradient(120deg,#173d5b,#286b91);color:white;padding:42px 22px}\n.hero{max-width:1080px;margin:auto}.eyebrow{text-transform:uppercase;letter-spacing:.12em;font-size:.78rem;font-weight:700;opacity:.85}\nh1{font-size:clamp(2rem,5vw,3.2rem);line-height:1.12;margin:.55rem 0 1rem}header p{max-width:760px;margin:.35rem 0;color:#edf6fb}\n.meta{display:flex;flex-wrap:wrap;gap:10px;margin-top:20px}.meta span{border:1px solid #ffffff55;border-radius:999px;padding:5px 12px;font-size:.88rem}\n.layout{max-width:1080px;margin:28px auto;padding:0 18px;display:grid;grid-template-columns:245px minmax(0,1fr);gap:24px}\nnav{align-self:start;position:sticky;top:18px;background:white;border:1px solid var(--line);border-radius:14px;padding:18px;max-height:calc(100vh - 36px);overflow:auto}\nnav strong{display:block;margin-bottom:10px;color:var(--brand)}nav a{display:block;text-decoration:none;color:#475569;padding:6px 8px;border-radius:7px;font-size:.9rem}nav a:hover{background:var(--brand2);color:var(--brand)}\nmain{min-width:0}.card{background:var(--paper);border:1px solid var(--line);border-radius:16px;padding:clamp(18px,3vw,30px);margin-bottom:18px;box-shadow:0 3px 12px #1f29370a}\nh2{font-size:1.55rem;line-height:1.25;margin:0 0 16px;color:#173d5b;border-bottom:2px solid var(--brand2);padding-bottom:10px}\nh3{font-size:1.12rem;line-height:1.35;margin:24px 0 8px;color:#245b86}h4{margin:16px 0 6px}\np{margin:8px 0 12px}ul,ol{padding-left:1.35rem;margin:8px 0 14px}li{margin:5px 0}\n.key{background:#eef5fa;border-left:4px solid var(--brand);padding:13px 16px;border-radius:8px;margin:14px 0}\n.tip{background:var(--gold);border-left:4px solid #d49b24;padding:13px 16px;border-radius:8px;margin:14px 0}\n.note{background:var(--green);border-left:4px solid #3b9560;padding:13px 16px;border-radius:8px;margin:14px 0}\ndetails{border:1px solid var(--line);border-radius:10px;margin:10px 0;background:#fff}\nsummary{cursor:pointer;padding:12px 15px;font-weight:650;color:#245b86}details .inside{padding:0 15px 14px}\n.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(205px,1fr));gap:12px}\n.tile{background:#f7fafc;border:1px solid var(--line);border-radius:12px;padding:14px}.tile h3{margin:0 0 6px}\ntable{border-collapse:collapse;width:100%;margin:12px 0;font-size:.94rem}th,td{border:1px solid var(--line);padding:10px;text-align:left;vertical-align:top}th{background:#edf4f8;color:#173d5b}\n.flow{display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:8px;margin:16px 0;padding:15px;background:#f7fafc;border:1px solid var(--line);border-radius:12px}\n.flow span{background:#fff;border:1px solid #8aa8bd;border-radius:8px;padding:9px 13px;font-weight:650}.arrow{color:var(--brand);font-weight:800}\n.quiz{border:1px solid var(--line);border-radius:12px;padding:16px;margin:14px 0;background:#fbfdff}.quiz p{font-weight:650}.quiz label{display:block;margin:7px 0;cursor:pointer}.quiz button{background:var(--brand);color:#fff;border:0;border-radius:8px;padding:9px 15px;font-weight:650;cursor:pointer;margin-top:8px}.feedback{font-weight:650;margin:8px 0 0}.correct{color:#167342}.wrong{color:#a13b31}\nfooter{max-width:1080px;margin:0 auto 35px;padding:0 18px;color:var(--muted);font-size:.88rem}\n.small{font-size:.9rem;color:var(--muted)}.tag{display:inline-block;background:#e8f2f8;color:#245b86;padding:2px 8px;border-radius:20px;font-size:.78rem;font-weight:700}\n@media(max-width:800px){.layout{display:block}nav{position:relative;top:auto;max-height:none;margin-bottom:18px}nav .links{columns:2}}\n@media(max-width:480px){nav .links{columns:1}.card{padding:17px}table{font-size:.84rem}th,td{padding:7px}}\n@media print{body{background:white}nav{display:none}.layout{display:block;margin:0}.card{break-inside:avoid;box-shadow:none}header{background:#fff;color:#173d5b;padding:20px 0}header p{color:#334155}}\n<\/style>\n<\/head>\n<body>\n<header>\n <div class=\"hero\">\n  <div class=\"eyebrow\">Nueva Vizcaya State University \u00b7 Bayombong Campus<\/div>\n  <h1>Chapter 1: Introduction to Systems Integration<\/h1>\n  <p><strong>IT PC 3 \u2013 Systems Integration and Architecture 1<\/strong><\/p>\n  <p>Explore what systems are, how they work, and why organizations connect different systems to work together.<\/p>\n  <div class=\"meta\"><span>BS Information Technology<\/span><span>Second Year<\/span><span>Learning timeframe: Weeks 1\u20132<\/span><span>5 hours<\/span><\/div>\n <\/div>\n<\/header>\n<div class=\"layout\">\n<nav aria-label=\"Module contents\">\n <strong>On this page<\/strong>\n <div class=\"links\">\n  <a href=\"#overview\">Module overview<\/a><a href=\"#outcomes\">Learning outcomes<\/a>\n  <a href=\"#system\">What is a system?<\/a><a href=\"#elements\">Elements of a system<\/a>\n  <a href=\"#types\">Types of systems<\/a><a href=\"#models\">Systems models<\/a>\n  <a href=\"#information\">Categories of information<\/a><a href=\"#integration\">What is system integration?<\/a>\n  <a href=\"#integration-types\">Three types of integration<\/a><a href=\"#crm-erp\">CRM vs ERP<\/a>\n  <a href=\"#methods\">Integration methods<\/a><a href=\"#advantages\">Advantages<\/a>\n  <a href=\"#disadvantages\">Disadvantages<\/a><a href=\"#vendor\">Choosing a vendor<\/a>\n  <a href=\"#integrator\">System integrator<\/a><a href=\"#why\">Why integrate systems?<\/a>\n  <a href=\"#check\">Knowledge check<\/a><a href=\"#references\">References<\/a>\n <\/div>\n<\/nav>\n<main>\n<section class=\"card\" id=\"overview\">\n <h2>Module Overview<\/h2>\n <p>This chapter introduces the processes, approaches, drivers, tools, and techniques required for successful <strong>Systems Integration (SI)<\/strong>. It also discusses critical success factors and best practices.<\/p>\n <p>The chapter focuses on how a proposed system can be integrated with other existing or planned systems. It uses architectures as a basis for addressing system integration problems and evaluating the capabilities that those architectures provide.<\/p>\n <div class=\"key\"><strong>In this chapter:<\/strong> You will learn about systems, information, system integration, integration types and methods, advantages and disadvantages, vendors, and system integrators.<\/div>\n<\/section>\n<section class=\"card\" id=\"outcomes\">\n <h2>Desired Learning Outcomes<\/h2>\n <p>After completing this chapter, you should be able to:<\/p>\n <ol>\n  <li>Discuss what a <strong>system<\/strong>, <strong>integration<\/strong>, and <strong>information<\/strong> are.<\/li>\n  <li>Explain the types, methods, advantages, and disadvantages of systems integration.<\/li>\n  <li>Explain the roles of an SI vendor and a system integrator.<\/li>\n  <li>Evaluate the reasons why systems need to be integrated.<\/li>\n <\/ol>\n<\/section>\n<section class=\"card\" id=\"system\">\n <h2>1. What Is a System?<\/h2>\n <p>The word <strong>system<\/strong> comes from the Greek word <em>Systema<\/em>, which means an organized relationship among components working toward a common cause or objective.<\/p>\n <div class=\"key\"><strong>Definition:<\/strong> A system is an orderly grouping of interdependent components linked together according to a plan to achieve a specific goal.<\/div>\n <h3>Examples of systems<\/h3>\n <div class=\"grid\">\n  <div class=\"tile\"><h3>Traffic management system<\/h3><p>Components work together to manage traffic.<\/p><\/div>\n  <div class=\"tile\"><h3>Payroll system<\/h3><p>Components support payroll-related activities.<\/p><\/div>\n  <div class=\"tile\"><h3>Automatic library system<\/h3><p>Components support library operations.<\/p><\/div>\n  <div class=\"tile\"><h3>Human resources information system<\/h3><p>Components manage human-resource information.<\/p><\/div>\n <\/div>\n <h3>1.1 Constraints of a System<\/h3>\n <p>A system must meet three basic constraints:<\/p>\n <ol>\n  <li>It must have a <strong>structure and behavior<\/strong> designed to achieve a predefined objective.<\/li>\n  <li><strong>Interconnectivity and interdependence<\/strong> must exist among its components.<\/li>\n  <li>The organization's objectives must have higher priority than the objectives of its subsystems.<\/li>\n <\/ol>\n <h3>1.2 Properties of a System<\/h3>\n <details><summary>Organization<\/summary><div class=\"inside\"><p>Organization means structure and order. It is the arrangement of components that helps achieve predetermined objectives.<\/p><\/div><\/details>\n <details><summary>Interaction<\/summary><div class=\"inside\"><p>Interaction refers to the way components operate with one another.<\/p><p><strong>Example:<\/strong> In an organization, the purchasing department interacts with the production department, while payroll interacts with the personnel department.<\/p><\/div><\/details>\n <details><summary>Interdependence<\/summary><div class=\"inside\"><p>Interdependence describes how system components depend on one another. Components are coordinated and linked according to a specified plan. The output of one subsystem may be required as the input of another subsystem.<\/p><\/div><\/details>\n <details><summary>Integration<\/summary><div class=\"inside\"><p>Integration concerns how system components are connected. The parts work together within the system even when each part performs a unique function.<\/p><\/div><\/details>\n <details><summary>Central Objective<\/summary><div class=\"inside\"><p>The system's objective must be central. It may be real or stated. An organization may state one objective but operate to achieve another.<\/p><p>Users must know the main objective of a computer application early in the analysis process to support successful design and conversion.<\/p><\/div><\/details>\n<\/section>\n<section class=\"card\" id=\"elements\">\n <h2>2. Elements of a System<\/h2>\n <p>A system is made up of connected elements that work together. The diagram below presents the main elements and their relationship.<\/p>\n <div class=\"flow\" aria-label=\"System process flow\"><span>Input<\/span><b class=\"arrow\">\u2192<\/b><span>Processor<\/span><b class=\"arrow\">\u2192<\/b><span>Output<\/span><\/div>\n <div class=\"flow\"><span>Control<\/span><span>Feedback<\/span><span>Environment<\/span><span>Boundaries and Interfaces<\/span><\/div>\n <h3>2.1 Inputs and Outputs<\/h3>\n <ul><li>The main aim of a system is to produce an output useful to its user.<\/li><li><strong>Input<\/strong> is the information that enters the system for processing.<\/li><li><strong>Output<\/strong> is the result of processing.<\/li><\/ul>\n <h3>2.2 Processor(s)<\/h3>\n <ul><li>The processor performs the actual transformation of input into output.<\/li><li>It is the operational component of a system.<\/li><li>Processors may modify input totally or partially, depending on the output specification.<\/li><li>When output specifications change, processing may also change. In some cases, the input is modified to allow the processor to handle the transformation.<\/li><\/ul>\n <h3>2.3 Control<\/h3>\n <ul><li>The control element guides the system.<\/li><li>It is the decision-making subsystem that controls activities involving input, processing, and output.<\/li><li>A computer system's behavior is controlled by its operating system and software. Output specifications help determine what input is needed and how much is needed to keep the system balanced.<\/li><\/ul>\n <h3>2.4 Feedback<\/h3>\n <ul><li>Feedback provides control in a dynamic system.<\/li><li><strong>Positive feedback<\/strong> is routine in nature and encourages system performance.<\/li><li><strong>Negative feedback<\/strong> is informational in nature and provides the controller with information for action.<\/li><\/ul>\n <h3>2.5 Environment<\/h3>\n <p>The environment is the <strong>supersystem<\/strong> within which an organization operates. It is the source of external elements that affect the system and helps determine how the system must function.<\/p>\n <p><strong>Example:<\/strong> Vendors and competitors in an organization's environment may create constraints that affect business performance.<\/p>\n <h3>2.6 Boundaries and Interfaces<\/h3>\n <ul><li>A system is defined by its <strong>boundaries<\/strong>, which identify its components, processes, and interrelationships when it interfaces with another system.<\/li><li>Boundaries determine the system's sphere of influence and control.<\/li><li>Knowing a system's boundaries is important when determining the nature of its interface with other systems and designing it successfully.<\/li><\/ul>\n<\/section>\n<section class=\"card\" id=\"types\">\n <h2>3. Types of Systems<\/h2>\n <p>Systems can be classified according to their characteristics and how they operate.<\/p>\n <details><summary>3.1 Physical or Abstract Systems<\/summary><div class=\"inside\"><p><strong>Physical systems<\/strong> are tangible entities that can be touched and felt. They may be static or dynamic.<\/p><ul><li>Desks and chairs in a computer center are examples of static physical parts.<\/li><li>A programmed computer is a dynamic system because its programs, data, and applications can change according to user needs.<\/li><\/ul><p><strong>Abstract systems<\/strong> are non-physical or conceptual entities, such as formulas, representations, or models of a real system.<\/p><\/div><\/details>\n <details><summary>3.2 Open or Closed Systems<\/summary><div class=\"inside\"><p><strong>Open systems<\/strong> interact with their environment. They receive inputs from outside and deliver outputs outside the system. An information system that adapts to changing environmental conditions is an example.<\/p><p><strong>Closed systems<\/strong> do not interact with their environment and are isolated from environmental influences. A completely closed system is rare in reality.<\/p><\/div><\/details>\n <details><summary>3.3 Adaptive and Non-Adaptive Systems<\/summary><div class=\"inside\"><p><strong>Adaptive systems<\/strong> respond to environmental changes to improve performance and survive. Examples include human beings and animals.<\/p><p><strong>Non-adaptive systems<\/strong> do not respond to the environment. Machines are given as an example in the module.<\/p><\/div><\/details>\n <details><summary>3.4 Permanent or Temporary Systems<\/summary><div class=\"inside\"><p><strong>Permanent systems<\/strong> continue for a long time. Example: business policies.<\/p><p><strong>Temporary systems<\/strong> are created for a specified period and dismantled afterward. Example: a DJ system set up for a program and dismantled after the program.<\/p><\/div><\/details>\n <details><summary>3.5 Natural and Manufactured Systems<\/summary><div class=\"inside\"><p><strong>Natural systems<\/strong> are created by nature. Examples: the solar system and seasonal system.<\/p><p><strong>Manufactured systems<\/strong> are human-made. Examples: rockets, dams, and trains.<\/p><\/div><\/details>\n <details><summary>3.6 Deterministic or Probabilistic Systems<\/summary><div class=\"inside\"><p><strong>Deterministic systems<\/strong> operate predictably, and the interaction among components is known with certainty. The module gives the example of two hydrogen molecules and one oxygen molecule making water.<\/p><p><strong>Probabilistic systems<\/strong> show uncertain behavior, so the exact output is not known. Examples: weather forecasting and mail delivery.<\/p><\/div><\/details>\n <details><summary>3.7 Social, Human-Machine, and Machine Systems<\/summary><div class=\"inside\"><p><strong>Social systems<\/strong> are made up of people. Examples: social clubs and societies.<\/p><p><strong>Human-machine systems<\/strong> involve both humans and machines in performing a task. Example: computer programming.<\/p><p><strong>Machine systems<\/strong> are systems in which human interference is neglected and tasks are performed by machines. Example: an autonomous robot.<\/p><\/div><\/details>\n <details><summary>3.8 Man-Made Information Systems<\/summary><div class=\"inside\"><p>A man-made information system is an interconnected set of information resources used to manage data for a particular organization under <strong>Direct Management Control (DMC)<\/strong>.<\/p><p>It includes hardware, software, communication, data, and applications to produce information according to an organization's needs.<\/p><h4>Three types<\/h4><ul><li><strong>Formal Information System:<\/strong> Based on the flow of information, such as memos and instructions, from top-level management to lower levels.<\/li><li><strong>Informal Information System:<\/strong> An employee-based system that solves day-to-day work-related problems.<\/li><li><strong>Computer-Based System:<\/strong> Directly depends on computers to manage business applications. Examples: automatic library, railway reservation, and banking systems.<\/li><\/ul><\/div><\/details>\n<\/section>\n<section class=\"card\" id=\"models\">\n <h2>4. Systems Models<\/h2>\n <p>Systems models represent or describe a system in different ways.<\/p>\n <details><summary>4.1 Schematic Models<\/summary><div class=\"inside\"><ul><li>A schematic model is a two-dimensional (2-D) chart showing system elements and their linkages.<\/li><li>Different arrows show information flow, material flow, and information feedback.<\/li><\/ul><\/div><\/details>\n <details><summary>4.2 Flow System Models<\/summary><div class=\"inside\"><ul><li>A flow system model shows the orderly flow of material, energy, and information that holds a system together.<\/li><li><strong>Program Evaluation and Review Technique (PERT)<\/strong> is an example used to represent a real-world system in model form.<\/li><\/ul><\/div><\/details>\n <details><summary>4.3 Static System Models<\/summary><div class=\"inside\"><ul><li>Static models represent one pair of relationships, such as activity\u2013time or cost\u2013quantity.<\/li><li>A <strong>Gantt chart<\/strong> provides a static picture of an activity-time relationship.<\/li><\/ul><\/div><\/details>\n <details><summary>4.4 Dynamic System Models<\/summary><div class=\"inside\"><p>Business organizations are dynamic systems. A dynamic model approximates the type of organization or application that analysts work with.<\/p><p>It shows the ongoing, constantly changing status of a system. It consists of:<\/p><ol><li>Inputs that enter the system<\/li><li>The processor through which transformation takes place<\/li><li>The program(s) required for processing<\/li><li>The output(s) that result from processing<\/li><\/ol><\/div><\/details>\n<\/section>\n<section class=\"card\" id=\"information\">\n <h2>5. Categories of Information<\/h2>\n <p>There are three categories of information related to managerial levels and the decisions managers make.<\/p>\n <div class=\"grid\">\n  <div class=\"tile\"><span class=\"tag\">Top management<\/span><h3>Strategic Information<\/h3><p>Used for long-range planning and policies covering the next few years.<\/p><p><strong>Examples:<\/strong> Revenue trends, financial investment, human resources, and population growth.<\/p><p><strong>System support:<\/strong> Decision Support System (DSS).<\/p><\/div>\n  <div class=\"tile\"><span class=\"tag\">Middle management<\/span><h3>Managerial Information<\/h3><p>Used for short- and intermediate-range planning, usually in terms of months.<\/p><p><strong>Examples:<\/strong> Sales analysis, cash flow projection, and annual financial statements.<\/p><p><strong>System support:<\/strong> Management Information Systems (MIS).<\/p><\/div>\n  <div class=\"tile\"><span class=\"tag\">Lower management<\/span><h3>Operational Information<\/h3><p>Used for daily and short-term planning to support day-to-day operational activities.<\/p><p><strong>Examples:<\/strong> Employee attendance records, overdue purchase orders, and current stock availability.<\/p><p><strong>System support:<\/strong> Data Processing Systems (DPS).<\/p><\/div>\n <\/div>\n <h3>Information categories at a glance<\/h3>\n <table><thead><tr><th>Information category<\/th><th>Management level<\/th><th>Planning focus<\/th><th>System support<\/th><th>Information characteristics shown in the module diagram<\/th><\/tr><\/thead><tbody>\n <tr><td>Strategic<\/td><td>Upper<\/td><td>Long-range / next few years<\/td><td>DSS<\/td><td>Low condensed volume; unstructured<\/td><\/tr>\n <tr><td>Managerial / Management Control<\/td><td>Middle<\/td><td>Short and intermediate range / months<\/td><td>MIS<\/td><td>Medium, moderately processed; moderately structured<\/td><\/tr>\n <tr><td>Operational<\/td><td>Lower<\/td><td>Daily and short-term<\/td><td>DPS<\/td><td>Large detail reports; highly structured<\/td><\/tr>\n <\/tbody><\/table>\n <div class=\"tip\"><strong>Remember:<\/strong> Strategic = upper management and DSS; Managerial = middle management and MIS; Operational = lower management and DPS.<\/div>\n<\/section>\n<section class=\"card\" id=\"integration\">\n <h2>6. What Is System Integration?<\/h2>\n <div class=\"key\"><strong>Definition:<\/strong> System Integration refers to the process of combining multiple individual subsystems or sub-components into one larger system, allowing the subsystems to function together.<\/div>\n <p>This connection allows the main system to achieve the overall functionality required by an organization.<\/p>\n <h3>Why organizations use system integration<\/h3>\n <ul><li>To improve efficiency, productivity, and the quality of operations.<\/li><li>To allow different IT systems to communicate in the background.<\/li><li>To reduce the time and effort spent manually sharing information among departments and management.<\/li><li>To increase the speed of information flow and reduce operational costs.<\/li><\/ul>\n <h3>Connecting with third parties<\/h3>\n <p>System integration can also connect an organization with suppliers, customers, and shareholders, each of whom may need information generated by the company.<\/p>\n <ul><li>Suppliers can keep track of raw material levels.<\/li><li>Customers can keep track of finished-goods inventory.<\/li><li>Shareholders can view the company's position through a dashboard-style display in real time.<\/li><\/ul>\n<\/section>\n<section class=\"card\" id=\"integration-types\">\n <h2>7. Three Types of System Integration<\/h2>\n <p>The module groups integration services into three classifications:<\/p>\n <details><summary>7.1 Enterprise Application Integration (EAI)<\/summary><div class=\"inside\"><p>The module describes EAI as a service-based integration. It involves communicating with different services, gathering information, and continuing with additional steps based on a desired action or workflow. The cycle can be triggered by an exposed service.<\/p><\/div><\/details>\n <details><summary>7.2 Data Integration (DI)<\/summary><div class=\"inside\"><p>Data Integration brings together information from different databases and services, then combines and transforms it into a central location for reporting.<\/p><p>It is useful when information from many different sources needs to be merged into one main point of access.<\/p><\/div><\/details>\n <details><summary>7.3 Electronic Document Integration / Interchange (EDI)<\/summary><div class=\"inside\"><p>EDI is a business-to-business-oriented process. Its functions include the paperless exchange of documents and electronic regulations.<\/p><\/div><\/details>\n<\/section>\n<section class=\"card\" id=\"crm-erp\">\n <h2>8. CRM Systems vs. ERP Systems<\/h2>\n <p>Both systems support business operations, but they focus on different objectives.<\/p>\n <div class=\"grid\">\n  <div class=\"tile\"><h3>Customer Relationship Management (CRM)<\/h3><p>A CRM system helps organize, manage, and use customer data.<\/p><ul><li>Customer contact details<\/li><li>Transaction history<\/li><li>Accounts and communication<\/li><\/ul><p><strong>Primary objective:<\/strong> Help improve sales by making the company's customer relationship information available at a glance.<\/p><\/div>\n  <div class=\"tile\"><h3>Enterprise Resource Planning (ERP)<\/h3><p>An ERP system manages business processes and automates various backend or back-office functions that otherwise may be performed manually.<\/p><ul><li>Product planning and development<\/li><li>Procurement and vendor management<\/li><li>Manufacturing<\/li><li>Sales and marketing<\/li><\/ul><p>These functions are integrated in one database and user interface.<\/p><p><strong>Primary objective:<\/strong> Usually to lower costs.<\/p><\/div>\n <\/div>\n <div class=\"tip\"><strong>Quick distinction:<\/strong> CRM focuses on customer data and improving sales. ERP integrates business processes and commonly aims to lower costs.<\/div>\n<\/section>\n<section class=\"card\" id=\"methods\">\n <h2>9. Methods of System Integration<\/h2>\n <p>Selecting an appropriate system integration solution requires careful planning. An organization must identify the correct subsystems, their locations, and the nature of their relationships.<\/p>\n <p>It is important to understand the processes involved, how they interact with stakeholders, and the organization's business objectives.<\/p>\n <details><summary>9.1 Point-to-Point Integration<\/summary><div class=\"inside\"><p>Point-to-point integration connects one system directly to another. It is generally suited to a <strong>1:1 relationship<\/strong> and usually handles one business function at a time.<\/p><p>As the number of systems increases, the number of connections also increases. This can quickly become difficult to manage.<\/p><\/div><\/details>\n <details><summary>9.2 Vertical Integration<\/summary><div class=\"inside\"><p>Vertical integration links subsystems according to how closely their functions are related. It creates a <strong>silo-like structure<\/strong>, with basic functions at the bottom and increasingly complex functions above.<\/p><p>It is relatively simple and involves a small number of systems, but it can be inflexible. Adding new functionality may require adding another silo, making long-term management difficult.<\/p><p><strong>Example:<\/strong> A Point-of-Sale (POS) system tracks orders and records sales transactions, while another software system generates invoices. The systems are tightly integrated for a specific business function, with data kept in one place rather than coordinated with other silos.<\/p><\/div><\/details>\n <details><summary>9.3 Star Integration (Spaghetti Integration)<\/summary><div class=\"inside\"><p>Star integration is a collection of point-to-point integrations. Several simple connections come together to create a larger star connection.<\/p><p>As more subsystems are connected, the number of connection points and lines increases. The resulting diagram may look like a plate of spaghetti, which is why it is also called <strong>spaghetti integration<\/strong>.<\/p><p>It can provide more functionality than individual point-to-point connections, but managing the integrations becomes demanding and the structure can become difficult to map.<\/p><\/div><\/details>\n <details><summary>9.4 Horizontal Integration<\/summary><div class=\"inside\"><p>Horizontal integration uses one specialized subsystem as a common user-interface layer that links the other subsystems.<\/p><p>The subsystems are connected indirectly through the main system rather than directly to one another. This reduces the number of connections that must be maintained.<\/p><p>The intermediary layer is commonly known as an <strong>Enterprise Service Bus (ESB)<\/strong>.<\/p><p><strong>Connection example from the module:<\/strong> Five subsystems require five connections; ten subsystems require ten connections through the common layer.<\/p><p>This approach can reduce the time, effort, and money spent building and maintaining the system. The module mentions healthcare as a common example and identifies EDI, Managed File Transfer (MFT), and application connectors as technologies that can help transfer, transform, and integrate data from multiple sources.<\/p><\/div><\/details>\n <h3>Compare the four methods<\/h3>\n <table><thead><tr><th>Method<\/th><th>How it connects systems<\/th><th>Key point from the module<\/th><\/tr><\/thead><tbody>\n <tr><td>Point-to-Point<\/td><td>Direct system-to-system connection<\/td><td>Good for 1:1 relationships; can become unmanageable as systems increase.<\/td><\/tr>\n <tr><td>Vertical<\/td><td>Subsystems linked by related functions in silo-like structures<\/td><td>Simple for a small number of systems, but can be inflexible.<\/td><\/tr>\n <tr><td>Star / Spaghetti<\/td><td>A collection of point-to-point connections<\/td><td>Offers more functionality, but connections can become difficult to map and manage.<\/td><\/tr>\n <tr><td>Horizontal<\/td><td>Subsystems connect through a common intermediary layer (ESB)<\/td><td>Reduces the number of connections to maintain.<\/td><\/tr>\n <\/tbody><\/table>\n<\/section>\n<section class=\"card\" id=\"advantages\">\n <h2>10. Advantages of System Integration<\/h2>\n <p>The module identifies four major advantages.<\/p>\n <div class=\"grid\">\n  <div class=\"tile\"><h3>1. Expanded Profitability<\/h3><p>System integration supports organizational efficiency. It reduces time spent switching among systems and performing repetitive manual activities, allowing employees to focus on their work.<\/p><\/div>\n  <div class=\"tile\"><h3>2. Better Administration and Examination<\/h3><p>When many projects operate independently, it is difficult and time-consuming to examine how the organization works. Integration helps provide a higher-level view.<\/p><\/div>\n  <div class=\"tile\"><h3>3. Lower Cost<\/h3><p>Maintaining multiple systems can be expensive because each program may require separate support, maintenance, and upgrades.<\/p><\/div>\n  <div class=\"tile\"><h3>4. Improved Consumer Satisfaction<\/h3><p>Integration can reduce the time spent providing products and services, which can help improve consumer satisfaction.<\/p><\/div>\n <\/div>\n<\/section>\n<section class=\"card\" id=\"disadvantages\">\n <h2>11. Disadvantages of System Integration<\/h2>\n <p>Although system integration can address problems caused by using multiple software systems, it also has disadvantages.<\/p>\n <details><summary>11.1 Security Problems<\/summary><div class=\"inside\"><p>With several separate programs, a security incident may be limited to one part of the system. In an integrated system, a hack or fraud could potentially expose information across the connected systems.<\/p><p>Data may become more vulnerable because it flows through channels from one program to another.<\/p><\/div><\/details>\n <details><summary>11.2 Complex Updating<\/summary><div class=\"inside\"><p>Integration does not turn several programs into one program; it connects them. Each program may still need to be updated separately, making the process complex and time-consuming.<\/p><\/div><\/details>\n <details><summary>11.3 Significant Cost<\/summary><div class=\"inside\"><p>Although system integration may reduce some support costs, each program may still need to be paid for separately. In some cases, the total cost may be high enough for a business to consider custom program development instead.<\/p><\/div><\/details>\n<\/section>\n<section class=\"card\" id=\"vendor\">\n <h2>12. How to Choose a Systems Integration Vendor / Company<\/h2>\n <p>The module provides four points to consider when selecting a systems integration service provider.<\/p>\n <h3>12.1 Be Certain of Your System Requirements<\/h3>\n <ul><li>Know what the software needs to do.<\/li><li>Align system performance with the organization's objectives and goals.<\/li><li>List required features separately from features that are useful but not essential.<\/li><li>Involve concerned staff and officers because multiple departments may use the solution.<\/li><li>Avoid investing in a system with many extra features but without the core capabilities needed.<\/li><\/ul>\n <h3>12.2 Verify the Service Provider's Credentials<\/h3>\n <ul><li>Evaluate the provider's background and experience, especially its problem-solving experience.<\/li><li>Consider whether the company is growing or downsizing.<\/li><li>Check certifications and qualifications to assess whether the vendor has the necessary skills.<\/li><li>A company specializing in standard software may not necessarily have the creativity needed for a particular integration project.<\/li><\/ul>\n <h3>12.3 Evaluate the Company's Partners<\/h3>\n <p>A large partner network can indicate that a provider is better equipped to handle unexpected events. It may also reduce dependence on the provider itself if a problem occurs.<\/p>\n <h3>12.4 Evaluate Customer Reviews and Feedback<\/h3>\n <ul><li>Consider the number and quality of customer reviews.<\/li><li>Look for feedback from businesses with similar needs and situations.<\/li><li>Relevant reviews can provide a clearer picture of the vendor's capabilities and possible problems with its solutions.<\/li><\/ul>\n<\/section>\n<section class=\"card\" id=\"integrator\">\n <h2>13. Who Is a System Integrator?<\/h2>\n <div class=\"key\"><strong>Definition:<\/strong> A systems integrator is an individual or business that brings together elements such as hardware, software, networking, and storage from multiple vendors to create a system for a client.<\/div>\n <p>A systems integrator specializes in implementing, planning, coordinating, scheduling, testing, improving, and sometimes maintaining IT systems.<\/p>\n <p>Using a systems integrator can save a client time and effort because the client does not need to communicate and negotiate separately with every party involved.<\/p>\n <p>A systems integrator may combine lower-cost, preconfigured, standard components and commercial off-the-shelf software to support the business goals established at the beginning of the selection process. This may be preferable to a more expensive custom integration that requires unique programming or components.<\/p>\n <h3>13.1 What Does a Systems Integrator Do?<\/h3>\n <ul><li>Enables data integration among the customer's existing systems according to the project scope.<\/li><li>Handles connections ranging from simple point-to-point links to complex many-to-many connections, both internally and with third parties.<\/li><li>Meets with the client to assess business needs and define technical requirements.<\/li><li>Supplies appropriate modules and configurations to support smooth integration.<\/li><li>Designs, implements, and tests the proposed solution.<\/li><li>May provide ongoing maintenance and management and contact third parties to establish connections.<\/li><li>Provides integration expertise that the customer may not have internally.<\/li><\/ul>\n <div class=\"note\"><strong>Key idea:<\/strong> The systems integrator helps bring the required people, technologies, and systems together so that the solution meets the client's needs.<\/div>\n<\/section>\n<section class=\"card\" id=\"why\">\n <h2>14. Why Do Systems Need to Be Integrated?<\/h2>\n <p>Many software options are available for different business areas, and these applications have significant processing capabilities. However, separate applications can become like <strong>\u201cislands of processing systems\u201d<\/strong> within an organization and across business boundaries.<\/p>\n <p>Modern software development faces challenges when existing methods cannot fully meet the requirements of compound systems with multiple and changing requirements.<\/p>\n <h3>Challenges described in the module<\/h3>\n <ul><li>When more than one system is used, additional effort is needed to integrate them.<\/li><li>When multiple developer groups are involved, the overall view of the system may be neglected.<\/li><li>Organizations face problems developing large systems with complex and changing requirements.<\/li><\/ul>\n <p>To respond to today's competitive environment, organizations need the ability to solve problems that cannot be solved by one system alone. Businesses need global, open, and distributed computational capability\u2014in other words, large-scale, complex, and integrated systems.<\/p>\n<\/section>\n<section class=\"card\" id=\"check\">\n <h2>15. Knowledge Check<\/h2>\n <p>Test your understanding of the chapter. Choose one answer for each question, then select <strong>Check answer<\/strong>.<\/p>\n <div class=\"quiz\" data-answer=\"b\"><p>1. What is a system?<\/p><label><input type=\"radio\" name=\"q1\" value=\"a\"> A single component with no relationship to others<\/label><label><input type=\"radio\" name=\"q1\" value=\"b\"> An orderly grouping of interdependent components linked to achieve a goal<\/label><label><input type=\"radio\" name=\"q1\" value=\"c\"> A collection of unrelated documents<\/label><button type=\"button\">Check answer<\/button><div class=\"feedback\" aria-live=\"polite\"><\/div><\/div>\n <div class=\"quiz\" data-answer=\"c\"><p>2. Which system element performs the transformation of input into output?<\/p><label><input type=\"radio\" name=\"q2\" value=\"a\"> Environment<\/label><label><input type=\"radio\" name=\"q2\" value=\"b\"> Feedback<\/label><label><input type=\"radio\" name=\"q2\" value=\"c\"> Processor<\/label><button type=\"button\">Check answer<\/button><div class=\"feedback\" aria-live=\"polite\"><\/div><\/div>\n <div class=\"quiz\" data-answer=\"a\"><p>3. Which type of system interacts with its environment?<\/p><label><input type=\"radio\" name=\"q3\" value=\"a\"> Open system<\/label><label><input type=\"radio\" name=\"q3\" value=\"b\"> Closed system<\/label><label><input type=\"radio\" name=\"q3\" value=\"c\"> Abstract system<\/label><button type=\"button\">Check answer<\/button><div class=\"feedback\" aria-live=\"polite\"><\/div><\/div>\n <div class=\"quiz\" data-answer=\"b\"><p>4. Which model is represented by a Gantt chart in the module?<\/p><label><input type=\"radio\" name=\"q4\" value=\"a\"> Dynamic system model<\/label><label><input type=\"radio\" name=\"q4\" value=\"b\"> Static system model<\/label><label><input type=\"radio\" name=\"q4\" value=\"c\"> Schematic model<\/label><button type=\"button\">Check answer<\/button><div class=\"feedback\" aria-live=\"polite\"><\/div><\/div>\n <div class=\"quiz\" data-answer=\"c\"><p>5. Which information category supports top-level, long-range planning?<\/p><label><input type=\"radio\" name=\"q5\" value=\"a\"> Operational information<\/label><label><input type=\"radio\" name=\"q5\" value=\"b\"> Managerial information<\/label><label><input type=\"radio\" name=\"q5\" value=\"c\"> Strategic information<\/label><button type=\"button\">Check answer<\/button><div class=\"feedback\" aria-live=\"polite\"><\/div><\/div>\n <div class=\"quiz\" data-answer=\"a\"><p>6. What is the intermediary layer in horizontal integration commonly called?<\/p><label><input type=\"radio\" name=\"q6\" value=\"a\"> Enterprise Service Bus (ESB)<\/label><label><input type=\"radio\" name=\"q6\" value=\"b\"> Data Processing System (DPS)<\/label><label><input type=\"radio\" name=\"q6\" value=\"c\"> Customer Relationship Management (CRM)<\/label><button type=\"button\">Check answer<\/button><div class=\"feedback\" aria-live=\"polite\"><\/div><\/div>\n <div class=\"quiz\" data-answer=\"b\"><p>7. Which integration method is also known as spaghetti integration?<\/p><label><input type=\"radio\" name=\"q7\" value=\"a\"> Vertical integration<\/label><label><input type=\"radio\" name=\"q7\" value=\"b\"> Star integration<\/label><label><input type=\"radio\" name=\"q7\" value=\"c\"> Horizontal integration<\/label><button type=\"button\">Check answer<\/button><div class=\"feedback\" aria-live=\"polite\"><\/div><\/div>\n <div class=\"quiz\" data-answer=\"c\"><p>8. What is the primary objective of CRM as described in the module?<\/p><label><input type=\"radio\" name=\"q8\" value=\"a\"> To manage manufacturing equipment<\/label><label><input type=\"radio\" name=\"q8\" value=\"b\"> To replace every business process<\/label><label><input type=\"radio\" name=\"q8\" value=\"c\"> To help improve sales using customer relationship information<\/label><button type=\"button\">Check answer<\/button><div class=\"feedback\" aria-live=\"polite\"><\/div><\/div>\n <div class=\"quiz\" data-answer=\"a\"><p>9. Which is a disadvantage of system integration?<\/p><label><input type=\"radio\" name=\"q9\" value=\"a\"> Security problems<\/label><label><input type=\"radio\" name=\"q9\" value=\"b\"> Faster information flow<\/label><label><input type=\"radio\" name=\"q9\" value=\"c\"> Improved consumer satisfaction<\/label><button type=\"button\">Check answer<\/button><div class=\"feedback\" aria-live=\"polite\"><\/div><\/div>\n <div class=\"quiz\" data-answer=\"b\"><p>10. Who brings together hardware, software, networking, and storage from multiple vendors for a client?<\/p><label><input type=\"radio\" name=\"q10\" value=\"a\"> Customer<\/label><label><input type=\"radio\" name=\"q10\" value=\"b\"> Systems integrator<\/label><label><input type=\"radio\" name=\"q10\" value=\"c\"> Shareholder<\/label><button type=\"button\">Check answer<\/button><div class=\"feedback\" aria-live=\"polite\"><\/div><\/div>\n <div class=\"note\"><strong>Review tip:<\/strong> If you miss an item, revisit the related section above and try again.<\/div>\n<\/section>\n<section class=\"card\" id=\"references\">\n <h2>References<\/h2>\n <h3>Book / Printed Resources<\/h3>\n <ul><li>Elliot, David (2016). <em>ERP and Information Systems: Integration or Disintegration<\/em>, Volume 5. IOP Publishing Ltd.<\/li><li>Finkelstein, Clive (2016). <em>Enterprise Architecture for Integration<\/em>. Artech House Books.<\/li><li>Gronwald, Klaus-Dieter (2015). <em>Integrated Business Information Systems: A Holistic View of the Linked Business Process Chain ERP-SCM-CRM-BI-Big Data<\/em>. Springer-Verlag GmbH Germany.<\/li><li>Karwowski, Waldemar and Tareq Ahram (2018). <em>Advances in Intelligent Systems and Computing<\/em>, Volume 722. Springer International Publishing.<\/li><\/ul>\n <h3>Electronic Resources<\/h3>\n <ul><li>Afdtek Solutions (2022, March 10). <em>Systems Integration Overview.<\/em> <a href=\"http://www.afdtek.com/downloads/whitepapers/White_Paper-Integration_Overview.pdf\">Read resource<\/a>.<\/li><li>Folio3 (2022, March 10). <em>What is systems integration and how do you do it?<\/em> <a href=\"https://dynamics.folio3.com/blog/system-integration/\">Read resource<\/a>.<\/li><li>HCL Technologies (2022, March 10). <em>System Integration.<\/em> <a href=\"https://www.hcltech.com/technology-qa/system-integration\">Read resource<\/a>.<\/li><li>Michalski, Tim (2022, March 10). <em>System Integration tutorial: Measure Twice, Cut Once.<\/em> <a href=\"https://www.controleng.com/articles/system-integration-tutorial-measure-twice-cut-once/\">Read resource<\/a>.<\/li><li>SRUTA (2022, March 10). <em>System Integration.<\/em> <a href=\"https://srutatechnologies.com/system-integration/\">Read resource<\/a>.<\/li><li>Youredi (2022, March 10). <em>Integration Solutions.<\/em> <a href=\"https://www.youredi.com/blog/what-is-system-integration\">Read resource<\/a>.<\/li><\/ul>\n <p class=\"small\">The references above are reproduced from the supplied instructional module. Some web addresses may have changed since the module was prepared.<\/p>\n<\/section>\n<\/main>\n<\/div>\n<footer><p>IT PC 3 \u00b7 Systems Integration and Architecture 1 \u00b7 Chapter 1: Introduction to Systems Integration<\/p><p>Prepared as a web-optimized presentation of the supplied NVSU instructional module. Content has been reorganized for online reading; the original learning topics and examples have been retained.<\/p><\/footer>\n<script>\ndocument.querySelectorAll('.quiz button').forEach(button=>{\n button.addEventListener('click',()=>{\n  const quiz=button.closest('.quiz');\n  const selected=quiz.querySelector('input[type=\"radio\"]:checked');\n  const feedback=quiz.querySelector('.feedback');\n  if(!selected){feedback.textContent='Please select an answer first.';feedback.className='feedback wrong';return;}\n  const correct=selected.value===quiz.dataset.answer;\n  feedback.textContent=correct?'Correct! Well done.':'Not quite. Review the related section and try again.';\n  feedback.className='feedback '+(correct?'correct':'wrong');\n });\n});\n<\/script>\n<\/body>\n<\/html>","ch2":"<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n<meta charset=\"UTF-8\">\n<meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">\n<title>Chapter II \u2013 Systems Requirements | IT PC 3<\/title>\n<style>\n:root{--ink:#17243a;--muted:#5c6b80;--brand:#245b82;--soft:#eaf3f8;--line:#dce5ec;--bg:#f5f8fb}\n*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.68 system-ui,sans-serif}\nmain{max-width:940px;margin:auto;padding:24px 16px 56px}.hero,.section,.card,.quiz{background:#fff;border:1px solid var(--line);border-radius:15px}\n.hero,.section{padding:24px;margin:16px 0}.eyebrow{color:var(--brand);font-size:.8rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase}\nh1,h2,h3{line-height:1.25}h1{font-size:clamp(2rem,5vw,3rem);margin:.4rem 0}h2{font-size:1.5rem;margin:0 0 12px}h3{font-size:1.12rem;margin:18px 0 6px}\np{margin:6px 0 12px}li{margin:5px 0}ul{padding-left:22px}.muted{color:var(--muted)}\n.tag{display:inline-block;background:var(--soft);color:var(--brand);padding:4px 10px;border-radius:20px;margin:12px 5px 0 0;font-size:.82rem;font-weight:650}\n.card{padding:16px;margin:12px 0;background:#fbfdff}.card h3{margin-top:0;color:var(--brand)}\n.callout{padding:16px 18px;background:#fff7df;border:1px solid #f0dfaa;border-radius:12px;margin:14px 0}\ndetails{border:1px solid var(--line);border-radius:11px;padding:12px 15px;margin:10px 0;background:#fff}\nsummary{cursor:pointer;color:var(--brand);font-weight:700}\n.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:12px}\n.flow{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:14px 0}.flow span{background:var(--soft);padding:8px 12px;border-radius:8px;font-weight:650}\n.quiz{padding:15px;margin:12px 0}.quiz p{font-weight:700}\na{color:var(--brand);overflow-wrap:anywhere}footer{text-align:center;color:var(--muted);font-size:.85rem;padding:20px}\n@media(max-width:600px){main{padding:12px}.hero,.section{padding:18px}}\n<\/style>\n<\/head>\n<body><main>\n<header class=\"hero\">\n<div class=\"eyebrow\">IT PC 3 \u00b7 Systems Integration and Architecture 1<\/div>\n<h1>Chapter II \u2013 Systems Requirements<\/h1>\n<p><strong>Lesson focus:<\/strong> Requirements, characteristics of good requirements, and UML diagrams. This version organizes the provided module into shorter, web-friendly learning sections.<\/p>\n<span class=\"tag\">BS Information Technology<\/span><span class=\"tag\">Second Year<\/span><span class=\"tag\">IM No. 2<\/span><span class=\"tag\">Weeks 3\u20134<\/span>\n<\/header>\n\n<section class=\"section\"><h2>1. Lesson Overview<\/h2>\n<p>Organizations use different systems to support their work. These may include enterprise resource planning (ERP), product life cycle management (PLM), financial systems, and legacy systems.<\/p>\n<p>Information must be shared with internal and external stakeholders, including suppliers, partner organizations, and regulatory agencies. Systems integration helps connect these sources, automate business processes, and synchronize data.<\/p>\n<p>An application integration platform provides a standard way to manage data flow between applications. It helps coordinate processes across systems while supporting stability and scalability.<\/p>\n<div class=\"callout\"><strong>Key idea:<\/strong> Systems integration connects applications and helps information move between them so related processes can work together.<\/div><\/section>\n\n<section class=\"section\"><h2>2. Desired Learning Outcomes<\/h2><p>After studying this lesson, you should be able to:<\/p>\n<ul><li>Compare and contrast various requirements modeling techniques.<\/li><li>Distinguish between non-functional and functional requirements.<\/li><li>Examine software requirements through appropriate metrics and measurements.<\/li><li>Explain how requirements gathering fits into a system development lifecycle.<\/li><li>Explain how modeling tools support testing throughout the system lifecycle.<\/li><\/ul><\/section>\n\n<section class=\"section\"><h2>3. What Are System Requirements?<\/h2>\n<p>A <strong>System Requirements Specification<\/strong> is a structured collection of information that describes a system's requirements.<\/p>\n<p>A <strong>business analyst<\/strong>, sometimes called a system analyst, studies the needs of clients and stakeholders. The analyst helps identify business problems and propose solutions.<\/p>\n<details><summary>Read more: Understanding system requirements<\/summary>\n<p>System requirements are statements made by a customer about what a system or product must provide and how it should meet the customer's needs. These needs may involve fulfilling a contract, solving a problem, reaching an objective, meeting a standard, or following project guidelines.<\/p>\n<p>Requirements differ from one project to another. Two companies developing a wireless phone, for example, may request different colors, weights, screen features, or product constraints.<\/p><\/details>\n<h3>Why the number of requirements matters<\/h3><ul><li><strong>Too many requirements:<\/strong> may greatly increase project cost and development time.<\/li><li><strong>Too few requirements:<\/strong> may cause the system to work incorrectly or fail to last as expected.<\/li><\/ul>\n<div class=\"callout\"><strong>Remember:<\/strong> The number and detail of requirements depend on the product or solution being developed.<\/div><\/section>\n\n<section class=\"section\"><h2>4. Five Requirements for a Future-Proof System Integration Platform<\/h2>\n<p>The module describes five capabilities that help an integration platform support changing organizational needs.<\/p>\n<article class=\"card\"><h3>4.1 Scalability and Flexibility<\/h3><p>Large amounts of data can place pressure on IT infrastructure. An <strong>in-memory data grid architecture<\/strong> distributes processing across multiple nodes.<\/p><ul><li>If one node fails, processing can move to another node.<\/li><li>This helps maintain business continuity and prevent data loss.<\/li><li>When processing needs increase, additional nodes can be added to provide more capacity.<\/li><\/ul><\/article>\n<article class=\"card\"><h3>4.2 Certified Cloud and On-Premises Integrations<\/h3><p>Organizations may use cloud-based systems alongside on-premises solutions, including legacy systems and specialized applications. Together, these create a complex, heterogeneous IT environment.<\/p><ul><li>The platform should support multiple cloud and on-premises environments.<\/li><li>It should manage data according to user workflows and business logic.<\/li><li>Certified connectors are recommended because vendor maintenance and support agreements can be honored.<\/li><li>Non-approved integration solutions may make vendor support harder to obtain when problems occur.<\/li><\/ul><\/article>\n<article class=\"card\"><h3>4.3 Real-Time Data Availability and Monitoring<\/h3><p>Business data is valuable when it can be captured, analyzed, and acted on in real time.<\/p><ul><li>In-memory data grids can process information quickly.<\/li><li>Multiple processes can run in parallel.<\/li><li>Integrated workflows can access, process, and present real-time business information.<\/li><li>Monitoring helps organizations respond quickly to disruptions and maintain business continuity.<\/li><\/ul><\/article>\n<article class=\"card\"><h3>4.4 Mobilization of Business Processes<\/h3><p>Mobile applications can display and run business processes. They allow users to respond and update systems from different locations.<\/p><ul><li>Mobile apps can help automate processes and reduce costs.<\/li><li>Back-end information can be made available to authenticated mobile users.<\/li><li>Mobile processes must be secure and closely integrated.<\/li><li>The module identifies encrypted offline operation and device-policy controls as capabilities that may be needed in regulated environments.<\/li><\/ul><\/article>\n<article class=\"card\"><h3>4.5 One Skill Set<\/h3><p>Manually written integration solutions can require deep knowledge of each system's processes and programming languages. They may also be difficult to maintain when the developer is unavailable.<\/p><ul><li>Standardized platforms can reduce manual coding.<\/li><li>Certified, ready-made connectors can reduce integration risks.<\/li><li>Visual orchestration and code-free tools can help developers connect multiple systems using a common skill set.<\/li><li>This can reduce specialized labor costs and increase return on investment (ROI).<\/li><\/ul><\/article>\n<\/section>\n\n<section class=\"section\"><h2>5. Terms for Systems Integration Requirements<\/h2>\n<h3>5.1 Interfaces<\/h3><p>An <strong>interface<\/strong> is the basic element used for communication between IT systems. The sending system uses an interface to send information to a receiving system. A system may act as both sender and receiver.<\/p>\n<h3>5.2 Messages<\/h3><p>Connected IT systems exchange <strong>messages<\/strong> through interfaces. A message sent by one system is expected to trigger an activity in the receiving system, either immediately or later.<\/p>\n<p>For example, when an electronic invoice is received, the receiving system may confirm receipt and activate an accounting system to record the balance.<\/p>\n<p>A message may contain:<\/p><ul><li><strong>Event:<\/strong> the occurrence that prompts a response.<\/li><li><strong>Information:<\/strong> structured data needed by the receiving system, such as invoice data or a passenger list.<\/li><li><strong>Control and routing information:<\/strong> details such as sender address, receiver address, content information, or checksums.<\/li><\/ul>\n<div class=\"flow\"><span>Event<\/span><b>+<\/b><span>Information<\/span><b>+<\/b><span>Control and routing data<\/span><b>\u2192 Message<\/b><\/div>\n<h3>5.3 Enterprise Application Integration (EAI)<\/h3><p><strong>Enterprise Application Integration (EAI)<\/strong> includes methods, concepts, and tools used to classify, connect, and coordinate applications within an organization.<\/p><p>Its goal is integrated business processing through a network of in-house applications, even when those applications use different generations of technology or architectures.<\/p><p>Documentation is an important prerequisite. It should cover business processes, the application network, individual applications, and their interfaces in a consistent form.<\/p>\n<h3>5.4 Electronic Data Interchange (EDI)<\/h3><p><strong>Electronic Data Interchange (EDI)<\/strong> is the standardized exchange of business documents between the IT systems of organizations or institutions.<\/p><p>Examples include orders, delivery documents, invoices, and shipping information. These business documents may also be called messages.<\/p>\n<h3>5.5 UN/EDIFACT<\/h3><p><strong>United Nations Electronic Data Interchange for Administration, Commerce, and Transport (UN/EDIFACT)<\/strong> is an international standard for electronic data exchange in administration, economics, and transportation.<\/p><p>It includes rules and message types. The module notes that its specifications, regulations, and message types are available online for use free of charge.<\/p>\n<h3>5.6 eXtensible Markup Language (XML)<\/h3><p><strong>eXtensible Markup Language (XML)<\/strong> has uses beyond EDI. EDI is one of its application areas and may be referred to as XML/EDI. XML can be used within an organization and between organizations.<\/p><\/section>\n\n<section class=\"section\"><h2>6. Views of the System Integration Model<\/h2>\n<p>When integrating IT systems, it is necessary to identify what information must be exchanged and how the exchange will happen. The module presents two views.<\/p>\n<div class=\"grid\"><article class=\"card\"><h3>Process View<\/h3><p>Shows the activities an IT system goes through when exchanging messages with other IT systems. It focuses on process steps and interactions important to the exchange.<\/p><p>Purely technical connection activities, such as connecting to the Internet, are not the focus of this view.<\/p><\/article>\n<article class=\"card\"><h3>Static View<\/h3><p>Describes the content and structure of the business objects exchanged between partners.<\/p><\/article><\/div>\n<div class=\"callout\"><strong>Quick distinction:<\/strong> The process view focuses on activities and interactions. The static view focuses on the content and structure of exchanged business objects.<\/div>\n<p>Messages are exchanged because of business events. Therefore, message exchange is an activity within a larger business process.<\/p>\n<p>To plan integration, the organization identifies business processes that require interaction between the IT system being studied and other IT systems. Diagrams from the business model can provide a foundation for this work.<\/p><\/section>\n\n<section class=\"section\"><h2>7. Case Study: Passenger Services System<\/h2>\n<p>The module uses a passenger services system to illustrate interactions between IT systems. It identifies two interfaces in the case study.<\/p>\n<details><summary>Example 1: Passenger list sent to customs<\/summary><p>For each flight, the passenger services system sends a passenger list to customs at the destination airport. The list includes each passenger and crew member.<\/p><p>The information is sent between the plane's departure and arrival. This gives customs time to verify the information and make clearance decisions.<\/p><\/details>\n<details><summary>Example 2: No boarding<\/summary><p>Ten minutes before the estimated time of departure, a timer triggers the no-boarding procedure. Baggage transportation requests a passenger list for the flight.<\/p><p>The passenger services system generates a list of people who have not boarded. After their luggage is unloaded, baggage transportation sends the list back with the appropriate confirmations.<\/p><\/details>\n<h3>Diagrams used to describe the process<\/h3><ul><li><strong>Activity diagram<\/strong><\/li><li><strong>Sequence diagram<\/strong><\/li><\/ul><p>The module also refers to a <strong>use case diagram<\/strong> of the Passenger Services business system as the base diagram for the two marked business use cases.<\/p>\n<div class=\"callout\"><strong>Study reminder:<\/strong> The provided pages name these diagrams and show how they relate to the passenger-services examples. They do not include a full step-by-step guide to drawing each UML diagram.<\/div><\/section>\n\n<section class=\"section\"><h2>8. Quick Knowledge Check<\/h2><p class=\"muted\">Try answering each question before opening the answer.<\/p>\n<div class=\"quiz\"><p>1. What is a structured collection of information that describes a system's requirements called?<\/p><details><summary>Show answer<\/summary>System Requirements Specification.<\/details><\/div>\n<div class=\"quiz\"><p>2. What can happen when a project has too many or too few requirements?<\/p><details><summary>Show answer<\/summary>Too many may increase cost and time. Too few may cause the system to work incorrectly or not last as expected.<\/details><\/div>\n<div class=\"quiz\"><p>3. What basic element allows IT systems to communicate?<\/p><details><summary>Show answer<\/summary>An interface.<\/details><\/div>\n<div class=\"quiz\"><p>4. What are the three main components that may be packaged into a message?<\/p><details><summary>Show answer<\/summary>Event, information, and control and routing information.<\/details><\/div>\n<div class=\"quiz\"><p>5. What does EAI stand for, and what is its goal?<\/p><details><summary>Show answer<\/summary>Enterprise Application Integration. Its goal is integrated business processing through a network of in-house applications.<\/details><\/div>\n<div class=\"quiz\"><p>6. What is the standardized exchange of business documents between organizations' IT systems called?<\/p><details><summary>Show answer<\/summary>Electronic Data Interchange (EDI).<\/details><\/div>\n<div class=\"quiz\"><p>7. Which view describes activities during message exchange, and which describes the structure of exchanged business objects?<\/p><details><summary>Show answer<\/summary>The process view describes activities. The static view describes the content and structure of business objects.<\/details><\/div>\n<div class=\"quiz\"><p>8. Which diagrams does the module identify for describing the process view between involved IT systems?<\/p><details><summary>Show answer<\/summary>Activity diagrams and sequence diagrams.<\/details><\/div><\/section>\n\n<section class=\"section\"><h2>9. References<\/h2><p class=\"muted\">References listed in the provided instructional module.<\/p>\n<h3>Books and printed resources<\/h3><ul>\n<li>Elliot, David (2016). <em>ERP and Information Systems: Integration or Disintegration<\/em>, Volume 5. IOP Publishing Ltd.<\/li>\n<li>Finkelstein, Clive (2016). <em>Enterprise Architecture for Integration<\/em>. Artech House Books.<\/li>\n<li>Gronwald, Klaus-Dieter (2015). <em>Integrated Business Information Systems: A Holistic View of the Linked Business Process Chain ERP-SCM-CRM-BI-Big Data<\/em>. Springer-Verlag GmbH Germany.<\/li>\n<li>Karwowski, Waldemar and Tareq Ahram (2018). <em>Advances in Intelligent Systems and Computing<\/em>, Volume 722. Springer International Publishing.<\/li><\/ul>\n<h3>Electronic resources<\/h3><ul>\n<li>Afdtek Solutions (2022, March 10). <em>Systems Integration Overview<\/em>. <a href=\"http://www.afdtek.com/downloads/whitepapers/White_Paper-Integration_Overview.pdf\">Source link<\/a>.<\/li>\n<li>Folio3 (2022, March 10). <em>What is systems integration and how do you do it?<\/em> <a href=\"https://dynamics.folio3.com/blog/system-integration/\">Source link<\/a>.<\/li>\n<li>HCL Technologies (2022, March 10). <em>System Integration<\/em>. <a href=\"https://www.hcltech.com/technology-qa/what-is-system-integration\">Source link<\/a>.<\/li>\n<li>Michalski, Tim (2022, March 10). <em>System Integration tutorial: Measure Twice, Cut Once<\/em>. <a href=\"https://www.controleng.com/articles/system-integration-tutorial-measure-twice-cut-once/\">Source link<\/a>.<\/li>\n<li>SRUTA (2022, March 10). <em>System Integration<\/em>. <a href=\"https://srutatechnologies.com/system-integration/\">Source link<\/a>.<\/li>\n<li>Yuoredi (2022, March 10). <em>Integration Solutions<\/em>. <a href=\"https://www.youredi.com/blog/what-is-system-integration\">Source link<\/a>.<\/li><\/ul><\/section>\n<footer>IT PC 3 \u00b7 Systems Integration and Architecture 1 \u00b7 Chapter II \u2013 Systems Requirements<\/footer>\n<\/main><\/body><\/html>","ch3":"<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n<meta charset=\"UTF-8\">\n<meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">\n<title>Chapter III \u2013 System Architecture for Integration<\/title>\n<style>\n:root{--ink:#233044;--muted:#5d6b7c;--brand:#315c78;--soft:#edf4f8;--line:#d9e3ea;--accent:#dcecf2;--warn:#fff5df}\n*{box-sizing:border-box}body{margin:0;background:#f5f7fa;color:var(--ink);font:16px/1.65 system-ui,-apple-system,Segoe UI,Arial,sans-serif}\nheader{background:linear-gradient(135deg,#24485f,#477b91);color:white;padding:42px 22px}\n.wrap{max-width:980px;margin:auto;padding:0 20px}\n.eyebrow{font-size:.82rem;letter-spacing:.09em;text-transform:uppercase;opacity:.85}\nh1{font-size:clamp(2rem,5vw,3rem);line-height:1.15;margin:.35rem 0}\nheader p{max-width:720px;margin:.8rem 0 0;color:#edf5f8}\nmain{padding:28px 0 60px}.meta{display:flex;flex-wrap:wrap;gap:10px;margin:0 0 24px}\n.pill{background:white;border:1px solid var(--line);border-radius:999px;padding:6px 12px;font-size:.88rem;color:var(--muted)}\nnav,.panel,.lesson,.callout,.quiz{background:white;border:1px solid var(--line);border-radius:14px;padding:20px;margin:18px 0}\nnav a{color:var(--brand);text-decoration:none;margin-right:14px;display:inline-block}\nh2{font-size:1.55rem;margin:36px 0 12px;padding-bottom:8px;border-bottom:2px solid var(--accent)}\nh3{font-size:1.12rem;margin:22px 0 8px;color:var(--brand)}\np{margin:9px 0}ul,ol{padding-left:1.4rem}li{margin:6px 0}\nstrong{color:#183d55}.callout{background:var(--soft);border-left:5px solid var(--brand)}\n.callout.warning{background:var(--warn);border-left-color:#c28a26}\ndetails{border:1px solid var(--line);border-radius:10px;padding:12px 15px;margin:10px 0;background:#fff}\nsummary{font-weight:650;cursor:pointer;color:var(--brand)}\ntable{width:100%;border-collapse:collapse;margin:14px 0;background:white}\nth,td{text-align:left;padding:11px;border:1px solid var(--line);vertical-align:top}\nth{background:var(--soft)}\n.quiz label{display:block;margin:10px 0}\nbutton{background:var(--brand);color:white;border:0;border-radius:8px;padding:10px 16px;font-weight:650;cursor:pointer}\n.feedback{font-weight:650;margin-top:10px}\n.small{font-size:.9rem;color:var(--muted)}\nfooter{border-top:1px solid var(--line);padding:24px 0;color:var(--muted);font-size:.9rem}\n@media(max-width:640px){header{padding:32px 0}.panel,.lesson,.callout,.quiz{padding:16px}table{font-size:.9rem}th,td{padding:8px}}\n<\/style>\n<\/head>\n<body>\n<header><div class=\"wrap\">\n<div class=\"eyebrow\">IT PC 3 \u00b7 Systems Integration and Architecture 1 \u00b7 Instructional Module 3<\/div>\n<h1>Chapter III: System Architecture for Integration<\/h1>\n<p>Explore how software architecture organizes system components, supports quality, and guides the design of integrated solutions.<\/p>\n<\/div><\/header>\n<main class=\"wrap\">\n<div class=\"meta\"><span class=\"pill\">Second Year<\/span><span class=\"pill\">Weeks 5\u20136<\/span><span class=\"pill\">5 hours<\/span><span class=\"pill\">NVSU \u2013 Bayombong Campus<\/span><\/div>\n<nav aria-label=\"Lesson navigation\">\n<strong>On this page:<\/strong>\n<a href=\"#overview\">Overview<\/a><a href=\"#architecture\">Architecture & Design<\/a><a href=\"#goals\">Goals & Architect<\/a><a href=\"#quality\">Quality Attributes<\/a><a href=\"#styles\">Styles<\/a><a href=\"#types\">Types<\/a><a href=\"#models\">Models<\/a><a href=\"#check\">Knowledge Check<\/a>\n<\/nav>\n\n<section id=\"overview\" class=\"panel\">\n<h2>1. Lesson Overview<\/h2>\n<p>By the end of this lesson, you should understand software architecture and software design. You will also learn how to choose and follow an appropriate model for a software project.<\/p>\n<p>A system's architecture describes its <strong>major components<\/strong>, the relationships among them, and how they interact. It is influenced by business strategy, quality attributes, human dynamics, design, and the IT environment.<\/p>\n<h3>Learning Outcomes<\/h3>\n<p>After completing this lesson, you should be able to:<\/p>\n<ul>\n<li>Analyze software architecture.<\/li>\n<li>Explain and discuss different software architecture styles.<\/li>\n<li>Apply systems integration foundations based on software architectures.<\/li>\n<li>Design feasible solutions for integration problems using enterprise architecture solutions.<\/li>\n<li>Analyze integration architecture patterns applicable to a target project.<\/li>\n<\/ul>\n<\/section>\n\n<section id=\"architecture\">\n<h2>2. Software Architecture and Software Design<\/h2>\n<div class=\"lesson\">\n<p><strong>Software Architecture<\/strong> focuses on the bigger structures of a software system. It explains how multiple software processes work together to complete tasks.<\/p>\n<p><strong>Software Design<\/strong> focuses on smaller structures. It describes the internal design of a single software process.<\/p>\n<table><thead><tr><th>Software Architecture<\/th><th>Software Design<\/th><\/tr><\/thead><tbody><tr><td>Deals with the larger structure of the system and cooperation among processes.<\/td><td>Deals with the internal structure of an individual software process.<\/td><\/tr><tr><td>Establishes major structural and nonfunctional decisions.<\/td><td>Describes how functional requirements are accomplished.<\/td><\/tr><\/tbody><\/table>\n<div class=\"callout\"><strong>Remember:<\/strong> Architecture addresses the system's overall structure. Design explains the details of how parts of the system are built and work together.<\/div>\n<\/div>\n\n<h3>2.1 Software Architecture<\/h3>\n<p>Architecture serves as a <strong>blueprint<\/strong> for a system. It provides an abstraction that helps manage complexity and establishes communication and coordination among components.<\/p>\n<p>It defines a structured solution that meets technical and operational requirements while considering quality attributes such as performance and security.<\/p>\n<p>Important architectural decisions include:<\/p>\n<ul>\n<li>Selecting the structural elements and interfaces that make up the system.<\/li>\n<li>Defining how those elements behave and collaborate.<\/li>\n<li>Combining structural and behavioral elements into larger subsystems.<\/li>\n<li>Aligning architectural decisions with business objectives.<\/li>\n<li>Using architectural styles to guide system organization.<\/li>\n<\/ul>\n\n<h3>2.2 Software Design<\/h3>\n<p>Software design provides a plan describing the elements of a system, how they fit together, and how they work together to meet system requirements.<\/p>\n<p>A design plan helps to:<\/p>\n<ul>\n<li>Negotiate system requirements and set expectations with customers, marketing, and management personnel.<\/li>\n<li>Serve as a blueprint during development.<\/li>\n<li>Guide detailed design, coding, integration, and testing.<\/li>\n<\/ul>\n<div class=\"callout\"><strong>Development sequence in the module:<\/strong> Domain analysis, requirements analysis, and risk analysis come before software design. Detailed design, coding, integration, and testing follow it.<\/div>\n<\/section>\n\n<section id=\"goals\">\n<h2>3. Goals of Architecture<\/h2>\n<p>The primary goal of architecture is to identify requirements that affect an application's structure. A well-planned architecture reduces business risks and connects business requirements with technical requirements.<\/p>\n<p>Other goals include:<\/p>\n<ul>\n<li>Show the system's structure while hiding implementation details.<\/li>\n<li>Realize use cases and scenarios.<\/li>\n<li>Address the requirements of different stakeholders.<\/li>\n<li>Handle functional and quality requirements.<\/li>\n<li>Reduce the goal of ownership and improve the organization's market position.<\/li>\n<li>Improve system quality and functionality.<\/li>\n<li>Increase external confidence in the organization or system.<\/li>\n<\/ul>\n\n<h2>4. Role of a Software Architect<\/h2>\n<p>A <strong>Software Architect<\/strong> provides a solution that the technical team can create and design for the entire application. The role requires expertise in three areas.<\/p>\n<details open><summary>Design Expertise<\/summary><ul><li>Knowledge of software design methods, including object-oriented and event-driven design.<\/li><li>Ability to lead the development team and coordinate work to maintain design integrity.<\/li><li>Ability to review design proposals and evaluate trade-offs.<\/li><\/ul><\/details>\n<details><summary>Domain Expertise<\/summary><ul><li>Knowledge of the system being developed and how the software may evolve.<\/li><li>Ability to assist in requirements investigation and ensure completeness and consistency.<\/li><li>Ability to coordinate the definition of the system's domain model.<\/li><\/ul><\/details>\n<details><summary>Technology Expertise<\/summary><ul><li>Knowledge of available technologies that support system implementation.<\/li><li>Ability to coordinate the selection of programming languages, frameworks, platforms, databases, and other technologies.<\/li><\/ul><\/details>\n\n<h3>4.1 Deliverables of the Architect<\/h3>\n<p>The architect's deliverables include:<\/p>\n<ol>\n<li>A clear, complete, consistent, and achievable set of functional goals.<\/li>\n<li>A functional description of the system with at least two layers of decomposition.<\/li>\n<li>A concept for the system.<\/li>\n<li>A system design with at least two layers of decomposition.<\/li>\n<li>An outline of timing, operator attributes, implementation plans, and operation plans.<\/li>\n<li>A document or process that ensures functional decomposition is followed and interfaces are controlled.<\/li>\n<\/ol>\n<\/section>\n\n<section id=\"quality\">\n<h2>5. Quality Attributes<\/h2>\n<p><strong>Quality<\/strong> is a measure of excellence or the state of being free from deficiencies or defects. <strong>Quality attributes<\/strong> are system properties separate from the system's functionality.<\/p>\n<p>They help distinguish a good system from a poor one and affect runtime behavior, system design, and user experience.<\/p>\n<h3>5.1 Static Quality Attributes<\/h3>\n<p>These describe the system's structure and organization. They are related to architecture, design, and source code. End users do not directly see them, but they affect development and maintenance costs.<\/p>\n<p><strong>Examples:<\/strong> modularity, testability, and maintainability.<\/p>\n<h3>5.2 Dynamic Quality Attributes<\/h3>\n<p>These describe how the system behaves while it is running. They are related to architecture, design, source code, configuration, deployment parameters, environment, and platform.<\/p>\n<p><strong>Examples:<\/strong> throughput, robustness, and scalability.<\/p>\n\n<h3>5.3 Quality Scenarios<\/h3>\n<p>Quality scenarios describe how to prevent a fault from becoming a failure. The module identifies six parts:<\/p>\n<details open><summary>View the six parts of a quality scenario<\/summary>\n<ol>\n<li><strong>Source<\/strong> \u2013 An internal or external entity, such as people, hardware, software, or physical infrastructure, that generates the stimulus.<\/li>\n<li><strong>Stimulus<\/strong> \u2013 A condition that needs to be considered when it arrives in a system.<\/li>\n<li><strong>Environment<\/strong> \u2013 The conditions in which the stimulus occurs.<\/li>\n<li><strong>Artifact<\/strong> \u2013 The whole system or one of its parts, such as processors, communication channels, persistent storage, or processes.<\/li>\n<li><strong>Response<\/strong> \u2013 An activity performed after the stimulus arrives, such as detecting a fault, recovering from a fault, or disabling an event source.<\/li>\n<li><strong>Response Measure<\/strong> \u2013 A measurement of the response so that the requirements can be tested.<\/li>\n<\/ol><\/details>\n\n<h3>5.4 Common Quality Attributes<\/h3>\n<p>Use the expandable groups below to review the attributes listed in the module.<\/p>\n<details open><summary>Design Qualities<\/summary>\n<ul><li><strong>Conceptual Integrity<\/strong> \u2013 Consistency and coherence of the overall design, including how components or modules are designed.<\/li><li><strong>Maintainability<\/strong> \u2013 The ease with which a system can undergo changes.<\/li><li><strong>Reusability<\/strong> \u2013 The ability of components and subsystems to be used in other applications.<\/li><\/ul>\n<\/details>\n<details><summary>Run-time Qualities<\/summary>\n<ul><li><strong>Interoperability<\/strong> \u2013 The ability of systems to communicate and exchange information successfully with external systems.<\/li><li><strong>Manageability<\/strong> \u2013 How easily system administrators can manage the application.<\/li><li><strong>Reliability<\/strong> \u2013 The ability of a system to remain operational over time.<\/li><li><strong>Scalability<\/strong> \u2013 The ability to handle increased load without affecting performance, or to be enlarged easily.<\/li><li><strong>Security<\/strong> \u2013 The ability to prevent malicious or accidental actions outside intended use.<\/li><li><strong>Performance<\/strong> \u2013 How quickly a system responds when executing an action within a given time interval.<\/li><li><strong>Availability<\/strong> \u2013 The proportion of time the system is functional and working, measurable over a predefined period.<\/li><\/ul>\n<\/details>\n<details><summary>System Qualities<\/summary>\n<ul><li><strong>Supportability<\/strong> \u2013 The ability to provide information that helps identify and resolve issues when the system does not work correctly.<\/li><li><strong>Testability<\/strong> \u2013 How easily test criteria can be created for the system and its components.<\/li><\/ul>\n<\/details>\n<details><summary>User Quality<\/summary>\n<ul><li><strong>Usability<\/strong> \u2013 How well the application meets user and consumer requirements by being intuitive.<\/li><\/ul>\n<\/details>\n<details><summary>Architecture and Non-runtime Qualities<\/summary>\n<ul><li><strong>Correctness<\/strong> \u2013 Satisfying all system requirements.<\/li><li><strong>Portability<\/strong> \u2013 The ability to run in different computing environments.<\/li><li><strong>Integrality<\/strong> \u2013 The ability of separately developed system components to work correctly together.<\/li><li><strong>Modifiability<\/strong> \u2013 The ease with which a software system can accommodate changes.<\/li><\/ul>\n<\/details>\n<details><summary>Business Quality Attributes<\/summary>\n<ul><li><strong>Cost and Schedule<\/strong> \u2013 System cost in relation to time to market, expected project lifetime, and use of legacy systems.<\/li><li><strong>Marketability<\/strong> \u2013 Use of the system in relation to market competition.<\/li><\/ul>\n<\/details>\n<\/section>\n\n<section id=\"styles\">\n<h2>6. Architectural Style<\/h2>\n<p>An <strong>architectural style<\/strong>, also called an <strong>architectural pattern<\/strong>, is a set of principles that shapes an application. It provides an abstract framework for a family of systems based on a structural organization pattern.<\/p>\n<p>An architectural style helps to:<\/p>\n<ul>\n<li>Provide a vocabulary of components and connectors, with rules for combining them.<\/li>\n<li>Improve partitioning and support design reuse by providing solutions to common problems.<\/li>\n<li>Describe how components and connectors are configured. Components are modules with defined interfaces; connectors are communication links between modules.<\/li>\n<\/ul>\n<h3>6.1 Common Architectural Designs<\/h3>\n<table><thead><tr><th>Focus Area<\/th><th>Architectural Design<\/th><th>Description<\/th><\/tr><\/thead><tbody>\n<tr><td>Communication<\/td><td><strong>Message Bus<\/strong><\/td><td>A software system that can receive and send messages through one or more communication channels.<\/td><\/tr>\n<tr><td>Communication<\/td><td><strong>Service-Oriented Architecture (SOA)<\/strong><\/td><td>Applications expose and consume functionality as services using contracts and messages.<\/td><\/tr>\n<tr><td>Deployment<\/td><td><strong>Client/Server<\/strong><\/td><td>The system is separated into two applications: the client sends requests to the server.<\/td><\/tr>\n<tr><td>Deployment<\/td><td><strong>3-tier or N-tier<\/strong><\/td><td>Functionality is separated into segments or tiers, each located on a physically separate computer.<\/td><\/tr>\n<tr><td>Domain<\/td><td><strong>Domain-Driven Design<\/strong><\/td><td>Models a business domain and defines business objects based on entities within that domain.<\/td><\/tr>\n<tr><td>Structure<\/td><td><strong>Component-Based<\/strong><\/td><td>Breaks an application into reusable functional or logical components with well-defined communication interfaces.<\/td><\/tr>\n<tr><td>Structure<\/td><td><strong>Layered<\/strong><\/td><td>Divides application concerns into stacked groups called layers.<\/td><\/tr>\n<tr><td>Structure<\/td><td><strong>Object-Oriented<\/strong><\/td><td>Divides responsibilities among objects, each containing relevant data and behavior.<\/td><\/tr>\n<\/tbody><\/table>\n<\/section>\n\n<section id=\"types\">\n<h2>7. Types of Architecture<\/h2>\n<p>From an enterprise viewpoint, the module identifies four architecture types. Together, they are referred to as <strong>enterprise architecture<\/strong>.<\/p>\n<details open><summary>Business Architecture<\/summary><p>Defines business strategy, governance, organization, and key business processes. It focuses on analyzing and designing business processes.<\/p><\/details>\n<details><summary>Application (Software) Architecture<\/summary><p>Provides a blueprint for individual application systems, their interactions, and their relationships to the organization's business processes.<\/p><\/details>\n<details><summary>Information Architecture<\/summary><p>Defines logical and physical data assets and data management resources.<\/p><\/details>\n<details><summary>Information Technology (IT) Architecture<\/summary><p>Defines the hardware and software building blocks that make up the organization's overall information system.<\/p><\/details>\n<\/section>\n\n<section id=\"models\">\n<h2>8. Architecture Models<\/h2>\n<p>Software architecture describes the high-level structure of a software system through abstraction, decomposition, composition, architectural styles, and quality attributes.<\/p>\n<p>An architecture design must meet the system's major functionality and performance requirements. It must also satisfy non-functional requirements such as reliability, scalability, portability, and availability.<\/p>\n<p>A software architecture should describe:<\/p>\n<ul><li>The group of system components.<\/li><li>The connections and interactions among components.<\/li><li>The deployment configuration of all components.<\/li><\/ul>\n<h3>8.1 Ways to Describe Software Architecture<\/h3>\n<details open><summary>UML \u2013 Unified Modeling Language<\/summary><p>UML is an object-oriented solution used in software modeling and design.<\/p><\/details>\n<details><summary>Architecture View Model (4+1 View Model)<\/summary><p>The architecture view model represents the functional and non-functional requirements of a software application.<\/p><\/details>\n<details><summary>ADL \u2013 Architecture Description Language<\/summary><p>ADL formally and semantically defines software architecture.<\/p><\/details>\n<div class=\"callout warning\"><strong>Study note:<\/strong> The provided module names UML, the 4+1 View Model, and ADL, but it does not include detailed diagrams or step-by-step procedures for creating them. This lesson keeps to the explanations supplied in the source.<\/div>\n<\/section>\n\n<section id=\"check\" class=\"quiz\">\n<h2>9. Quick Knowledge Check<\/h2>\n<p>Choose the best answer for each question, then select <strong>Check Answers<\/strong>.<\/p>\n<form id=\"quizForm\">\n<p><strong>1. Which describes the bigger structures of a software system?<\/strong><\/p>\n<label><input type=\"radio\" name=\"q1\" value=\"a\"> Software Design<\/label>\n<label><input type=\"radio\" name=\"q1\" value=\"b\"> Software Architecture<\/label>\n<label><input type=\"radio\" name=\"q1\" value=\"c\"> Source Code<\/label>\n<p><strong>2. Which quality attribute refers to the ability of a system to communicate and exchange information with external systems?<\/strong><\/p>\n<label><input type=\"radio\" name=\"q2\" value=\"a\"> Interoperability<\/label>\n<label><input type=\"radio\" name=\"q2\" value=\"b\"> Portability<\/label>\n<label><input type=\"radio\" name=\"q2\" value=\"c\"> Usability<\/label>\n<p><strong>3. Which architectural style divides application concerns into stacked groups?<\/strong><\/p>\n<label><input type=\"radio\" name=\"q3\" value=\"a\"> Message Bus<\/label>\n<label><input type=\"radio\" name=\"q3\" value=\"b\"> Client/Server<\/label>\n<label><input type=\"radio\" name=\"q3\" value=\"c\"> Layered<\/label>\n<p><strong>4. Which architecture defines logical and physical data assets?<\/strong><\/p>\n<label><input type=\"radio\" name=\"q4\" value=\"a\"> Business Architecture<\/label>\n<label><input type=\"radio\" name=\"q4\" value=\"b\"> Information Architecture<\/label>\n<label><input type=\"radio\" name=\"q4\" value=\"c\"> IT Architecture<\/label>\n<p><strong>5. What does ADL stand for?<\/strong><\/p>\n<label><input type=\"radio\" name=\"q5\" value=\"a\"> Architecture Description Language<\/label>\n<label><input type=\"radio\" name=\"q5\" value=\"b\"> Application Design Layout<\/label>\n<label><input type=\"radio\" name=\"q5\" value=\"c\"> Architecture Data Link<\/label>\n<button type=\"button\" onclick=\"checkQuiz()\">Check Answers<\/button>\n<div id=\"feedback\" class=\"feedback\" aria-live=\"polite\"><\/div>\n<\/form>\n<details><summary>Show answer key<\/summary><ol><li>Software Architecture<\/li><li>Interoperability<\/li><li>Layered<\/li><li>Information Architecture<\/li><li>Architecture Description Language<\/li><\/ol><\/details>\n<\/section>\n\n<section class=\"panel\">\n<h2>10. Lesson Wrap-Up<\/h2>\n<ul>\n<li><strong>Software architecture<\/strong> describes the larger system structure and the way components cooperate.<\/li>\n<li><strong>Software design<\/strong> plans the elements and internal details needed to meet system requirements.<\/li>\n<li><strong>Quality attributes<\/strong> describe important system properties beyond functionality.<\/li>\n<li><strong>Architectural styles<\/strong> provide reusable ways to organize components and connections.<\/li>\n<li><strong>Enterprise architecture<\/strong> includes business, application, information, and IT architecture.<\/li>\n<li><strong>Architecture models<\/strong> such as UML, the 4+1 View Model, and ADL describe software architecture.<\/li>\n<\/ul>\n<div class=\"callout\"><strong>You\u2019ve completed Chapter III!<\/strong> Review the expandable sections and try the knowledge check again to strengthen your understanding.<\/div>\n<\/section>\n\n<section class=\"panel\">\n<h2>References<\/h2>\n<h3>Books and Printed Resources<\/h3>\n<ul><li>Elliot, David (2016). <em>ERP and Information Systems: Integration or Disintegration<\/em>, Volume 5. IOP Publishing Ltd.<\/li><li>Finkelstein, Clive (2016). <em>Enterprise Architecture for Integration<\/em>. Artech House Books.<\/li><li>Gronwald, Klaus-Dieter (2015). <em>Integrated Business Information Systems: A Holistic View of the Linked Business Process Chain ERP-SCM-CRM-BI-Big Data<\/em>. Springer-Verlag GmbH Germany.<\/li><li>Karwowski, Waldemar, and Tareq Ahram (2018). <em>Advances in Intelligent Systems and Computing<\/em>, Volume 722. Springer International Publishing.<\/li><\/ul>\n<h3>Electronic Resources<\/h3>\n<ul><li>Afdtek Solutions (2022, March 10). <a href=\"http://www.afdtek.com/downloads/whitepapers/White_Paper-Integration_Overview.pdf\">Systems Integration Overview<\/a>.<\/li><li>Folio3 (2022, March 10). <a href=\"https://dynamics.folio3.com/blog/system-integration/\">What is systems integration and how do you do it?<\/a><\/li><li>HCL Technologies (2022, March 10). <a href=\"https://www.hcltech.com/technology-qa/what-is-system-integration\">System Integration<\/a>.<\/li><li>Michalski, Tim (2022, March 10). <a href=\"https://www.controleng.com/articles/system-integration-tutorial-measure-twice-cut-once/\">System Integration tutorial: Measure Twice, Cut Once<\/a>.<\/li><li>SRUTA (2022, March 10). <a href=\"https://srutatechnologies.com/system-integration/\">System Integration<\/a>.<\/li><li>Yuoredi (2022, March 10). <a href=\"https://www.youredi.com/blog/what-is-system-integration\">Integration Solutions<\/a>.<\/li><\/ul>\n<\/section>\n<footer><p>IT PC 3 \u2013 Systems Integration and Architecture 1 \u00b7 Chapter III \u2013 System Architecture for Integration<\/p><p class=\"small\">Prepared as a web-optimized learning presentation based on the supplied instructional module.<\/p><\/footer>\n<\/main>\n<script>\nfunction checkQuiz(){\n const answers={q1:\"b\",q2:\"a\",q3:\"c\",q4:\"b\",q5:\"a\"};let score=0,total=Object.keys(answers).length;\n for(const [q,a] of Object.entries(answers)){const chosen=document.querySelector('input[name=\"'+q+'\"]:checked');if(chosen&&chosen.value===a)score++;}\n const feedback=document.getElementById(\"feedback\");\n feedback.textContent=\"You got \"+score+\" out of \"+total+\" correct. \"+(score===total?\"Excellent work!\":\"Review the lesson sections and try again.\");\n}\n<\/script>\n<\/body><\/html>"};
+DOCS.ch4 = "<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n<meta charset=\"UTF-8\">\n<meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n<title>Chapter IV \u2013 Integration Process | SIA 1<\/title>\n<style>\n:root{--ink:#18332c;--muted:#62736d;--green:#276b55;--mint:#eaf4ef;--paper:#f7faf8;--line:#dce8e1;--gold:#f1c66d;--white:#fff}\n*{box-sizing:border-box}body{margin:0;background:var(--paper);color:#263b34;font:16px/1.65 Inter,Segoe UI,Arial,sans-serif}\nheader{background:linear-gradient(120deg,#163d32,#2c745b);color:white;padding:38px 22px}\n.hero{max-width:980px;margin:auto}.eyebrow{font-size:.78rem;letter-spacing:.13em;text-transform:uppercase;opacity:.85;font-weight:700}\nh1{font-size:clamp(2rem,5vw,3.2rem);line-height:1.12;margin:10px 0}\nheader p{max-width:700px;color:#e3f0e9;margin:12px 0 0}\n.meta{display:flex;flex-wrap:wrap;gap:10px;margin-top:22px}.meta span{border:1px solid #ffffff55;border-radius:30px;padding:5px 12px;font-size:.85rem}\nmain{max-width:980px;margin:28px auto;padding:0 18px 60px}\nsection{background:white;border:1px solid var(--line);border-radius:16px;padding:clamp(19px,4vw,30px);margin:20px 0;box-shadow:0 5px 18px #163d3208}\nh2{font-size:1.55rem;color:var(--ink);margin:0 0 14px;line-height:1.25}h3{color:var(--green);font-size:1.12rem;margin:18px 0 6px}\np{margin:8px 0 13px}.lead{font-size:1.05rem;color:#43574f}\n.callout{background:var(--mint);border-left:4px solid var(--green);padding:14px 17px;border-radius:8px;margin:16px 0}\n.note{background:#fff8e8;border-left:4px solid var(--gold);padding:14px 17px;border-radius:8px;margin:16px 0}\nul,ol{padding-left:23px}li{margin:6px 0}\n.step{border:1px solid var(--line);border-radius:12px;margin:12px 0;overflow:hidden}\n.step summary{cursor:pointer;padding:15px 17px;font-weight:700;color:var(--ink);background:#fbfdfb}\n.step summary::marker{color:var(--green)}.step .inside{padding:2px 18px 16px}\ntable{width:100%;border-collapse:collapse;margin:14px 0;font-size:.94rem}\nth,td{border:1px solid var(--line);padding:11px;text-align:left;vertical-align:top}\nth{background:var(--mint);color:var(--ink)}\n.quiz-q{padding:15px 0;border-bottom:1px solid var(--line)}.quiz-q:last-child{border:0}\nlabel.option{display:block;margin:7px 0;color:#42564e;cursor:pointer}\nbutton{background:var(--green);color:white;border:0;border-radius:9px;padding:11px 17px;font-weight:700;cursor:pointer;margin-top:12px}\nbutton:hover{filter:brightness(.94)}#quiz-result{font-weight:700;margin-top:12px;color:var(--green)}\nfooter{text-align:center;color:var(--muted);font-size:.86rem;padding:24px}\n.small{font-size:.9rem;color:var(--muted)}\n@media(max-width:650px){body{font-size:15px}table{display:block;overflow-x:auto;white-space:normal}section{padding:19px}}\n<\/style>\n<\/head>\n<body>\n<header><div class=\"hero\">\n<div class=\"eyebrow\">IT PC 3 \u00b7 Systems Integration and Architecture 1<\/div>\n<h1>Chapter IV: Integration Process<\/h1>\n<p>Explore the systems integration process and the project activities that help coordinate an integration project.<\/p>\n<div class=\"meta\"><span>Second Year<\/span><span>Weeks 7\u20138<\/span><span>5 Hours<\/span><span>Instructional Module 4<\/span><\/div>\n<\/div><\/header>\n<main>\n<section>\n<h2>Lesson Overview<\/h2>\n<p class=\"lead\">By the end of this lesson, you should develop a sound understanding of systems integration processes and project integration management.<\/p>\n<h3>Learning Outcomes<\/h3>\n<p>After studying this lesson, you should be able to:<\/p>\n<ul>\n<li>Define and analyze an integrated process.<\/li>\n<li>Explain fulfillment, procurement, and production.<\/li>\n<li>Analyze processes in different enterprise systems.<\/li>\n<li>Examine intra-company and inter-company processes and their integration patterns.<\/li>\n<li>Simulate ERP system features.<\/li>\n<\/ul>\n<div class=\"note\"><strong>Scope note:<\/strong> The printed module lists fulfillment, procurement, production, enterprise-system processes, intra-company processes, and inter-company processes as lesson topics. The supplied pages do not provide detailed explanations for these topics, so this web version does not add unsupported definitions.<\/div>\n<\/section>\n\n<section>\n<h2>1. The Six-Step Systems Integration Process<\/h2>\n<p>Systems integration helps improve an organization's productivity and workflow. It connects components so that data can flow between them.<\/p>\n<p>A systems integrator\u2014a company or team of professionals\u2014typically organizes the work into six important phases.<\/p>\n<div class=\"callout\"><strong>Key idea:<\/strong> Each phase contributes to connecting separate components so they can function as one system.<\/div>\n\n<details class=\"step\" open><summary>Step 1 \u2013 Requirements Gathering<\/summary><div class=\"inside\">\n<p>This phase usually begins with one or more meetings. You share your ideas and explain what you expect the future system and its components to do.<\/p>\n<h3>Why it matters<\/h3><p>Every company uses different subsystems to achieve different goals. The systems integrator needs to understand the requirements clearly before proposing a solution.<\/p>\n<\/div><\/details>\n\n<details class=\"step\"><summary>Step 2 \u2013 Analysis<\/summary><div class=\"inside\">\n<p>After the expectations and specifications are listed, business analysts examine them to determine operational feasibility.<\/p>\n<p>They translate requirements into needs and help improve communication between the client and the development team.<\/p>\n<h3>Why it matters<\/h3><p>What a client wants may not always be what the client actually needs. Collaboration and careful consideration help identify a suitable solution.<\/p>\n<\/div><\/details>\n\n<details class=\"step\"><summary>Step 3 \u2013 Architecture Design<\/summary><div class=\"inside\">\n<p>After analysis, the systems integrator plans how the different subsystems and components should be integrated.<\/p>\n<p>Blueprints of the integration are usually created so both sides can visualize the process.<\/p>\n<h3>Why it matters<\/h3><p>A proper architecture design provides a foundation for efficient integration and helps ensure connectivity between components.<\/p>\n<\/div><\/details>\n\n<details class=\"step\"><summary>Step 4 \u2013 Systems Integration Design<\/summary><div class=\"inside\">\n<p>This is described in the module as the longest and most challenging phase. The actual integration is performed based on the architecture design.<\/p>\n<p>The logical design is developed into its physical equivalent. Careful work helps prevent the loss of valuable data.<\/p>\n<h3>Why it matters<\/h3><p>Connecting independent systems and maintaining regular data flow requires time and precision. Successful integration can automate business processes and provide accurate data.<\/p>\n<\/div><\/details>\n\n<details class=\"step\"><summary>Step 5 \u2013 Implementation<\/summary><div class=\"inside\">\n<p>When the system is ready, it is verified and tested. If bugs are detected, they are fixed and the system undergoes operational testing again.<\/p>\n<p>After testing, the system goes live. Users may still need time to become familiar and comfortable with the new solution.<\/p>\n<h3>Why it matters<\/h3><p>Team members need to understand how the new solution works before they can use it to improve their workflow.<\/p>\n<\/div><\/details>\n\n<details class=\"step\"><summary>Step 6 \u2013 Maintenance<\/summary><div class=\"inside\">\n<p>After release, the system continues to receive support. Components may be modified or added when needed, and reported bugs can be fixed.<\/p>\n<h3>Why it matters<\/h3><p>As an organization changes, its system can also evolve. Upgrading an existing system may be more beneficial than acquiring a new product.<\/p>\n<\/div><\/details>\n<\/section>\n\n<section>\n<h2>2. Project Integration Management<\/h2>\n<p><strong>Project Integration Management<\/strong> is concerned with the processes needed to ensure that the different activities of a project are properly coordinated.<\/p>\n<p>It includes identifying, defining, combining, and coordinating the various processes related to a project.<\/p>\n<h3>Processes, Project Stages, and Key Deliverables<\/h3>\n<div style=\"overflow-x:auto\"><table>\n<thead><tr><th>Process<\/th><th>Project Stage<\/th><th>Key Deliverable<\/th><\/tr><\/thead>\n<tbody>\n<tr><td>Develop Project Charter<\/td><td>Initiating<\/td><td>Project Charter<\/td><\/tr>\n<tr><td>Develop Project Management Plan<\/td><td>Planning<\/td><td>Project Management Plan<\/td><\/tr>\n<tr><td>Direct and Manage Project Work<\/td><td>Execution<\/td><td>Deliverables<\/td><\/tr>\n<tr><td>Monitor and Control Project Work<\/td><td>Monitoring and Control<\/td><td>Change Requests<\/td><\/tr>\n<tr><td>Perform Integrated Change Control<\/td><td>Monitoring and Control<\/td><td>Change request status updates<\/td><\/tr>\n<tr><td>Close Project or Phase<\/td><td>Project Closure<\/td><td>Final Product<\/td><\/tr>\n<\/tbody><\/table><\/div>\n<\/section>\n\n<section>\n<h2>3. Understanding the Six Project Integration Processes<\/h2>\n<details class=\"step\" open><summary>Develop Project Charter<\/summary><div class=\"inside\">\n<p>The <strong>Project Charter<\/strong> formally authorizes and defines the objectives of a project. The module states that a project cannot start without one.<\/p>\n<p>It includes the project's name, description, and deliverables. It is usually written by someone with higher authority than the project manager.<\/p>\n<\/div><\/details>\n<details class=\"step\"><summary>Develop Project Management Plan<\/summary><div class=\"inside\">\n<p>This process uses the outputs of other planning processes to create a consistent and logical document.<\/p>\n<p>The <strong>Project Management Plan<\/strong> guides project control and execution. It documents planning assumptions, supports communication among stakeholders, and helps with project control.<\/p>\n<\/div><\/details>\n<details class=\"step\"><summary>Direct and Manage Project Work<\/summary><div class=\"inside\">\n<p>This process carries out the work defined in the Project Management Plan and implements changes based on project requirements.<\/p>\n<\/div><\/details>\n<details class=\"step\"><summary>Monitor and Control Project Work<\/summary><div class=\"inside\">\n<p>This process tracks, reviews, and reports project progress to help meet the performance objectives defined in the Project Management Plan.<\/p>\n<\/div><\/details>\n<details class=\"step\"><summary>Perform Integrated Change Control<\/summary><div class=\"inside\">\n<p>This process assesses the impact of changes across the project. It compares actual work with the projected plan and makes adjustments when they are not aligned.<\/p>\n<\/div><\/details>\n<details class=\"step\"><summary>Close Project or Phase<\/summary><div class=\"inside\">\n<p>This is the formal completion of the activities related to a project or project phase.<\/p>\n<\/div><\/details>\n<div class=\"callout\"><strong>Remember the difference:<\/strong>\n<ul>\n<li><strong>Monitor and Control Project Work<\/strong> focuses on managing how the project scope is carried out.<\/li>\n<li><strong>Perform Integrated Change Control<\/strong> focuses on managing changes to the project scope.<\/li>\n<\/ul><\/div>\n<\/section>\n\n<section>\n<h2>4. Quick Knowledge Check<\/h2>\n<p>Choose the best answer for each question based on the lesson.<\/p>\n<form id=\"quiz\">\n<div class=\"quiz-q\"><strong>1. Which phase usually begins with meetings to understand the client's expectations?<\/strong>\n<label class=\"option\"><input type=\"radio\" name=\"q1\" value=\"a\"> A. Maintenance<\/label>\n<label class=\"option\"><input type=\"radio\" name=\"q1\" value=\"b\"> B. Requirements Gathering<\/label>\n<label class=\"option\"><input type=\"radio\" name=\"q1\" value=\"c\"> C. Implementation<\/label><\/div>\n<div class=\"quiz-q\"><strong>2. Which phase creates blueprints showing how components should be integrated?<\/strong>\n<label class=\"option\"><input type=\"radio\" name=\"q2\" value=\"a\"> A. Architecture Design<\/label>\n<label class=\"option\"><input type=\"radio\" name=\"q2\" value=\"b\"> B. Analysis<\/label>\n<label class=\"option\"><input type=\"radio\" name=\"q2\" value=\"c\"> C. Maintenance<\/label><\/div>\n<div class=\"quiz-q\"><strong>3. Which phase includes verification, testing, and putting the system live?<\/strong>\n<label class=\"option\"><input type=\"radio\" name=\"q3\" value=\"a\"> A. Requirements Gathering<\/label>\n<label class=\"option\"><input type=\"radio\" name=\"q3\" value=\"b\"> B. Systems Integration Design<\/label>\n<label class=\"option\"><input type=\"radio\" name=\"q3\" value=\"c\"> C. Implementation<\/label><\/div>\n<div class=\"quiz-q\"><strong>4. What formally authorizes and defines a project's objectives?<\/strong>\n<label class=\"option\"><input type=\"radio\" name=\"q4\" value=\"a\"> A. Project Charter<\/label>\n<label class=\"option\"><input type=\"radio\" name=\"q4\" value=\"b\"> B. Final Product<\/label>\n<label class=\"option\"><input type=\"radio\" name=\"q4\" value=\"c\"> C. Change Request<\/label><\/div>\n<div class=\"quiz-q\"><strong>5. Which process focuses on assessing changes across the project?<\/strong>\n<label class=\"option\"><input type=\"radio\" name=\"q5\" value=\"a\"> A. Close Project or Phase<\/label>\n<label class=\"option\"><input type=\"radio\" name=\"q5\" value=\"b\"> B. Perform Integrated Change Control<\/label>\n<label class=\"option\"><input type=\"radio\" name=\"q5\" value=\"c\"> C. Direct and Manage Project Work<\/label><\/div>\n<button type=\"button\" onclick=\"gradeQuiz()\">Check My Answers<\/button>\n<div id=\"quiz-result\" aria-live=\"polite\"><\/div>\n<\/form>\n<\/section>\n\n<section>\n<h2>5. Lesson Wrap-Up<\/h2>\n<p>The systems integration process is organized into six phases: requirements gathering, analysis, architecture design, systems integration design, implementation, and maintenance.<\/p>\n<p>Project Integration Management coordinates project activities through processes that cover authorization, planning, execution, monitoring and control, and closure.<\/p>\n<div class=\"callout\"><strong>Before you leave:<\/strong> Review the six integration phases and the six Project Integration Management processes. Review the key ideas before moving on to the next lesson.<\/div>\n<\/section>\n\n<section>\n<h2>References<\/h2>\n<h3>Books and Printed Resources<\/h3>\n<ul>\n<li>Elliot, David (2016). <em>ERP and Information Systems: Integration or Disintegration<\/em>, Volume 5. IOP Publishing Ltd.<\/li>\n<li>Finkelstein, Clive (2016). <em>Enterprise Architecture for Integration<\/em>. Artech House Books.<\/li>\n<\/ul>\n<h3>Electronic Resources<\/h3>\n<ul>\n<li>Afdtek Solutions (2022, March 10). <em>Systems Integration Overview.<\/em><\/li>\n<li>Folio3 (2022, March 10). <em>What is systems integration and how do you do it?<\/em><\/li>\n<li>Gronwald, Klaus-Dieter (2015). <em>Integrated Business Information Systems.<\/em> Springer-Verlag GmbH Germany.<\/li>\n<li>HCL Technologies (2022, March 10). <em>System Integration.<\/em><\/li>\n<li>Karwowski, Waldemar and Tareq Ahram (2018). <em>Advances in Intelligent Systems and Computing<\/em>, Volume 722. Springer International Publishing.<\/li>\n<li>Michalski, Tim (2022, March 10). <em>System Integration tutorial: Measure Twice, Cut Once.<\/em><\/li>\n<li>SRUTA (2022, March 10). <em>System Integration.<\/em><\/li>\n<li>Youredi (2022, March 10). <em>Integration Solutions.<\/em><\/li>\n<\/ul>\n<p class=\"small\">Institution: Nueva Vizcaya State University \u2013 Bayombong Campus \u00b7 College of Information Technology Education<\/p>\n<\/section>\n<footer>IT PC 3 \u00b7 Systems Integration and Architecture 1 \u00b7 Chapter IV<\/footer>\n<\/main>\n<script>\nfunction gradeQuiz(){\n const answers={q1:'b',q2:'a',q3:'c',q4:'a',q5:'b'};\n let score=0,answered=0;\n for(const [q,a] of Object.entries(answers)){\n   const selected=document.querySelector('input[name=\"'+q+'\"]:checked');\n   if(selected){answered++;if(selected.value===a)score++;}\n }\n const result=document.getElementById('quiz-result');\n if(answered<5){result.textContent='Please answer all 5 questions first. You have answered '+answered+' of 5.';return;}\n result.textContent='Your score: '+score+' / 5. '+(score===5?'Excellent work!':score>=3?'Good effort! Review any sections you missed.':'Keep practicing. Revisit the lesson sections and try again.');\n}\n<\/script>\n<\/body>\n<\/html>";
+const MODS = [
+ {id:'ch1',n:'01',tag:'Foundations',title:'Introduction to Systems Integration',desc:'What systems are, why organizations integrate them, and the types, methods, advantages and disadvantages of integration.'},
+ {id:'ch2',n:'02',tag:'Requirements',title:'Systems Requirements',desc:'How to gather, analyze and document the requirements that every integrated system is built on.'},
+ {id:'ch3',n:'03',tag:'Architecture',title:'System Architecture for Integration',desc:'Architectural styles and integration architecture: how connected systems are structured and designed.'},
+ {id:'ch4',n:'04',tag:'Process',title:'Integration Process',desc:'The six-step systems integration process and the project integration management processes that keep a project on track.'}
+];
+const REFLECT={
+ ch1:'Think of a real place with separate systems (a school, a store, a clinic). Which systems would you connect first, and why?',
+ ch2:'Which requirement would be hardest to gather from real users, and how would you handle it?',
+ ch3:'Which architectural style would you choose for an integration project you know, and why?',
+ ch4:'Which of the six integration steps do you think projects most often rush, and what could go wrong?'
+};
+const K_ACC='sia1_accounts_v1', K_SES='sia1_session_v1', ADMIN={id:'ADMIN001',pw:'Admin123!'};
+const $=s=>document.querySelector(s), $$=s=>[...document.querySelectorAll(s)];
+const mem={};
+const store={
+ get(k,d){try{const v=localStorage.getItem(k);return v?JSON.parse(v):d}catch(e){return k in mem?mem[k]:d}},
+ set(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){mem[k]=v}},
+ del(k){try{localStorage.removeItem(k)}catch(e){delete mem[k]}}
+};
+const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const accounts=()=>store.get(K_ACC,{});
+const saveAcc=a=>store.set(K_ACC,a);
+const session=()=>store.get(K_SES,null);
+const me=()=>{const s=session();return s&&s.role==='student'?accounts()[s.id]||null:null};
+/* Forms: buttons and the Enter key call the handler directly, so nothing depends on browser form submission
+   (some preview windows block it). */
+function onForm(sel,fn){
+ const f=$(sel),run=()=>fn({target:f,preventDefault(){}});
+ f.addEventListener('submit',e=>e.preventDefault());
+ f.querySelector('.auth-submit').addEventListener('click',run);
+ f.addEventListener('keydown',e=>{if(e.key==='Enter'&&e.target.tagName==='INPUT'){e.preventDefault();run()}});
+}
+let storageOK=true;try{localStorage.setItem('sia1_t','1');localStorage.removeItem('sia1_t')}catch(e){storageOK=false}
+/* ===== DATABASE =====
+   Paste your Supabase Project URL and anon public key below to store accounts and progress
+   in a shared online database (works on any device). Leave both empty to keep data in this browser only. */
+const CFG={url:'',key:''};
+const REMOTE=!!(CFG.url&&CFG.key);
+const DEMO={id:'STUDENT01',name:'Demo Student',pw:'sia12345'}; /* built-in example account: works with or without a database */
+function dbErr(e){
+ if(e&&e.status===404)return 'Database error: the "students" table was not found. Run the SQL setup in Supabase first.';
+ if(e&&(e.status===401||e.status===403))return 'Database error ('+e.status+'): access was rejected. Check the anon key and the table\'s access policy.';
+ if(e&&e.status)return 'Database error (HTTP '+e.status+'). Please check your Supabase setup.';
+ return 'Could not reach the database. Check the Project URL in the file and your internet connection.';
+}
+async function api(path,opts={}){
+ const r=await fetch(CFG.url.replace(/\/$/,'')+'/rest/v1/'+path,{...opts,headers:{apikey:CFG.key,Authorization:'Bearer '+CFG.key,'Content-Type':'application/json',...(opts.headers||{})}});
+ if(!r.ok){const e=new Error('HTTP '+r.status);e.status=r.status;throw e}
+ const t=await r.text();return t?JSON.parse(t):null;
+}
+const fromRow=r=>({id:r.student_id,name:r.name,hash:r.hash,created:r.created,progress:r.progress||{},last:r.last||null});
+async function dbGet(key){if(!REMOTE)return accounts()[key]||null;const r=await api('students?id_key=eq.'+encodeURIComponent(key)+'&select=*');return r&&r[0]?fromRow(r[0]):null}
+async function dbCreate(key,a){
+ if(!REMOTE){const all=accounts();if(all[key])return false;all[key]=a;saveAcc(all);return true}
+ try{await api('students',{method:'POST',headers:{Prefer:'return=minimal'},body:JSON.stringify({id_key:key,student_id:a.id,name:a.name,hash:a.hash,created:a.created,progress:{},last:null})});return true}
+ catch(e){if(e.status===409)return false;throw e}
+}
+function dbSave(key){if(!REMOTE||key===DEMO.id)return;const a=accounts()[key];if(!a)return;api('students?id_key=eq.'+encodeURIComponent(key),{method:'PATCH',headers:{Prefer:'return=minimal'},body:JSON.stringify({progress:a.progress,last:a.last})}).catch(()=>notify('Could not sync your progress. Check your connection.'))}
+async function dbList(){if(!REMOTE)return Object.entries(accounts());const r=await api('students?select=*&order=created.asc');return r.map(x=>[x.id_key,fromRow(x)])}
+async function dbDelete(key){if(REMOTE)await api('students?id_key=eq.'+encodeURIComponent(key),{method:'DELETE'});const a=accounts();delete a[key];saveAcc(a)}
+async function hash(s){try{const b=await crypto.subtle.digest('SHA-256',new TextEncoder().encode('sia1|'+s));return [...new Uint8Array(b)].map(x=>x.toString(16).padStart(2,'0')).join('')}catch(e){return 'p:'+btoa(unescape(encodeURIComponent(s)))}}
+let noticeT;function notify(t){const n=$('#notice');n.textContent=t;n.classList.add('show');clearTimeout(noticeT);noticeT=setTimeout(()=>n.classList.remove('show'),2800)}
+function msg(id,t,err){const m=$(id);m.textContent=t;m.className='auth-message show'+(err?' error':'');}
+function clearMsg(){$$('.auth-message').forEach(m=>{m.className='auth-message';m.textContent=''})}
+
+const VIEWS={home:'#viewHome',register:'#viewRegister',login:'#viewLogin',adminLogin:'#viewAdminLogin',dash:'#viewDash',admin:'#viewAdmin'};
+function show(v,opts={}){
+ const s=session();
+ if(v==='dash'&&!me()){v='login';opts.msg='Please log in to open your modules.';}
+ if(v==='admin'&&!(s&&s.role==='admin')){v='adminLogin';}
+ if((v==='register'||v==='login')&&me()){v='dash';}
+ Object.entries(VIEWS).forEach(([k,sel])=>$(sel).hidden=(k!==v));
+ const portal=(v==='dash'||v==='admin');
+ $('#siteHeader').hidden=false;$('footer').hidden=false;
+ clearMsg();if(opts.msg)msg(v==='adminLogin'?'#adminMsg':'#loginMsg',opts.msg,opts.err);
+ if(v==='dash')renderDash();
+ if(v==='admin')renderAdmin();
+ $$('#navLinks a[data-view]').forEach(a=>a.classList.toggle('active',a.dataset.view===v));syncNav();window.scrollTo(0,0);
+}
+function syncNav(){
+ const s=session(),u=me();
+ $$('[data-guest]').forEach(e=>e.hidden=!!s);
+ $$('[data-member]').forEach(e=>e.hidden=!u);
+ $('#navUser').hidden=!u;if(u)$('#navUser').textContent=u.name.split(' ')[0];
+ $('#navLogout').hidden=!s;
+ const c=$('#navCta');c.hidden=!s;
+ if(u){c.textContent='My modules';c.dataset.view='dash'}else if(s){c.textContent='Admin panel';c.dataset.view='admin'}else{c.textContent='Sign up';c.dataset.view='register'}
+}
+
+/* Registration */
+onForm('#regForm',async e=>{
+ e.preventDefault();
+ const name=$('#regName').value.trim().replace(/\s+/g,' '),id=$('#regId').value.trim(),pw=$('#regPw').value,pw2=$('#regPw2').value;
+ if(name.length<2)return msg('#regMsg','Please enter your full name.',1);
+ if(!/^[A-Za-z0-9-]{3,30}$/.test(id))return msg('#regMsg','Student ID may only use letters, numbers and hyphens (min. 3 characters).',1);
+ if([ADMIN.id,DEMO.id].includes(id.toUpperCase()))return msg('#regMsg','That ID is reserved. Please use your own student ID.',1);
+ if(pw.length<6)return msg('#regMsg','Password must be at least 6 characters.',1);
+ if(pw!==pw2)return msg('#regMsg','Passwords do not match.',1);
+ const key=id.toUpperCase(),btn=e.target.querySelector('.auth-submit'),form=e.target;
+ btn.disabled=true;btn.textContent='Creating account…';
+ try{
+  const ok=await dbCreate(key,{id,name,hash:await hash(pw),created:new Date().toISOString(),progress:{},last:null});
+  if(!ok)return msg('#regMsg','That Student ID is already registered. Try logging in instead.',1);
+  form.reset();clearMsg();pendingId=id;
+  $('#okName').textContent=name.split(' ')[0];$('#successOverlay').classList.add('open');$('#okLogin').focus();
+ }catch(err){msg('#regMsg',dbErr(err),1)}
+ finally{btn.disabled=false;btn.textContent='Create account'}
+});
+let pendingId='';
+function closeSuccess(){$('#successOverlay').classList.remove('open');show('login');msg('#loginMsg','Your account has been created. You can now log in.');$('#loginId').value=pendingId;$('#loginPw').focus()}
+$('#okLogin').onclick=closeSuccess;
+$('#demoFill').onclick=()=>{$('#loginId').value=DEMO.id;$('#loginPw').value=DEMO.pw;$('#loginPw').focus()};
+document.addEventListener('keydown',e=>{if(e.key==='Escape'&&$('#successOverlay').classList.contains('open'))closeSuccess()});
+
+/* Student login */
+onForm('#loginForm',async e=>{
+ e.preventDefault();
+ const key=$('#loginId').value.trim().toUpperCase(),pw=$('#loginPw').value;
+ let a;
+ if(key===DEMO.id){
+  if(pw!==DEMO.pw)return msg('#loginMsg','Incorrect password for the demo account.',1);
+  a=accounts()[key]||{id:DEMO.id,name:DEMO.name,hash:'demo',created:new Date().toISOString(),progress:{},last:null};
+ }else{
+  try{a=await dbGet(key)}catch(err){return msg('#loginMsg',dbErr(err),1)}
+  if(!a)return msg('#loginMsg','No account found for that ID. Please register first.',1);
+  if(a.hash!==await hash(pw))return msg('#loginMsg','Incorrect password. Please try again.',1);
+ }
+ const all=accounts();all[key]=a;saveAcc(all);
+ store.set(K_SES,{role:'student',id:key});e.target.reset();
+ show('dash');notify('Logged in. Welcome back, '+a.name.split(' ')[0]+'!');
+});
+
+/* Admin login */
+onForm('#adminForm',e=>{
+ e.preventDefault();
+ if($('#adminId').value.trim().toUpperCase()===ADMIN.id&&$('#adminPw').value===ADMIN.pw){store.set(K_SES,{role:'admin',id:ADMIN.id});e.target.reset();show('admin')}
+ else msg('#adminMsg','Incorrect admin ID or password.',1);
+});
+
+function logout(){store.del(K_SES);show('home');notify('You have been logged out.')}
+
+/* Student dashboard */
+function pct(u){return Math.round(MODS.filter(m=>u.progress[m.id]).length/MODS.length*100)}
+function renderDash(){
+ const u=me();if(!u)return;
+ const done=MODS.filter(m=>u.progress[m.id]).length,p=pct(u);
+ $('#wName').textContent=u.name;
+ $('#wSub').textContent='Student ID '+u.id+' · '+(done?'You have completed '+done+' of '+MODS.length+' modules. Keep going!':'Your modules are ready. Start with Chapter 01.');
+ $('#wBar').style.width=p+'%';$('#stDone').textContent=done+' / '+MODS.length;$('#stPct').textContent=p+'%';
+ const lm=MODS.find(m=>m.id===u.last);$('#stLast').textContent=lm?'Chapter '+lm.n:'None yet';
+ $('#modGrid').innerHTML=MODS.map((m,i)=>`<article class="lesson mod-card"><div class="lesson-top"><span class="chapter">CHAPTER ${m.n}</span><span class="lesson-tag ${u.progress[m.id]?'done':''}">${u.progress[m.id]?'✓ Completed':m.tag}</span></div><h3>${esc(m.title)}</h3><p>${esc(m.desc)}</p><div class="mod-actions"><button class="btn btn-primary" data-open="${m.id}">${u.progress[m.id]?'Review module':(u.last===m.id?'Continue':'Open module')} <span>↗</span></button>${u.progress[m.id]?`<button class="btn mod-ref" data-reflect="${i}">${(u.progress._reflections||{})[m.id]?'My reflection':'Write reflection'}</button>`:''}</div>${(u.progress._reflections||{})[m.id]?'<span class="ref-note">✓ Reflection saved</span>':''}</article>`).join('');
+ $('#dashHome').hidden=false;$('#dashReader').hidden=true;
+}
+let cur=null;
+function openMod(id){
+ const u=me();if(!u)return show('login',{msg:'Please log in first.'});
+ const i=MODS.findIndex(m=>m.id===id);if(i<0)return;cur=i;
+ const acc=accounts();acc[u.id.toUpperCase()].last=id;saveAcc(acc);dbSave(u.id.toUpperCase());
+ $('#readerTitle').textContent='Chapter '+MODS[i].n+' · '+MODS[i].title;
+ $('#readerFrame').srcdoc=DOCS[id];
+ $('#rPrev').disabled=i===0;$('#rNext').disabled=i===MODS.length-1;syncDone();
+ $('#dashHome').hidden=true;$('#dashReader').hidden=false;window.scrollTo(0,0);
+}
+function syncDone(){const u=me(),d=u.progress[MODS[cur].id];$('#rDone').textContent=d?'✓ Completed (undo)':'Mark as complete'}
+$('#rDone').onclick=()=>{
+ const u=me(),acc=accounts(),k=u.id.toUpperCase(),id=MODS[cur].id;let just=false;
+ if(acc[k].progress[id])delete acc[k].progress[id];else{acc[k].progress[id]=new Date().toISOString();just=true}
+ saveAcc(acc);dbSave(k);syncDone();
+ if(just)openReflect(cur,false);
+};
+
+/* Reflection */
+let refIdx=0;
+function openReflect(i,again){
+ const u=me();if(!u)return;refIdx=i;const m=MODS[i],s=(u.progress._reflections||{})[m.id]||{};
+ $('#refKicker').textContent='Chapter '+m.n+' · '+m.title;
+ $('#refTitle').textContent=again?'Your reflection':'Chapter '+m.n+' complete! Time to reflect.';
+ $('#refSub').textContent=again?'You can update your answers any time.':'Great work finishing this chapter. Take a minute to put what you learned in your own words.';
+ $('#refQ2').textContent=REFLECT[m.id];$('#ref1').value=s.a||'';$('#ref2').value=s.b||'';
+ $('#refMsg').className='auth-message';$('#reflectOverlay').classList.add('open');$('#ref1').focus();
+}
+function closeReflect(){$('#reflectOverlay').classList.remove('open');if(!$('#dashHome').hidden)renderDash()}
+$('#refSave').onclick=()=>{
+ const a=$('#ref1').value.trim(),b=$('#ref2').value.trim();
+ if(!a&&!b)return msg('#refMsg','Write at least one answer, or choose "Skip for now".',1);
+ const u=me(),acc=accounts(),k=u.id.toUpperCase(),pr=acc[k].progress;
+ (pr._reflections=pr._reflections||{})[MODS[refIdx].id]={a,b,at:new Date().toISOString()};
+ saveAcc(acc);dbSave(k);closeReflect();notify('Reflection saved.');
+};
+$('#refSkip').onclick=closeReflect;
+document.addEventListener('keydown',e=>{if(e.key==='Escape'&&$('#reflectOverlay').classList.contains('open'))closeReflect()});
+$('#rBack').onclick=()=>{renderDash();window.scrollTo(0,0)};
+$('#rPrev').onclick=()=>openMod(MODS[cur-1].id);
+$('#rNext').onclick=()=>openMod(MODS[cur+1].id);
+
+/* Admin */
+function refCell(a){
+ const r=(a.progress||{})._reflections||{},ks=MODS.filter(m=>r[m.id]);
+ if(!ks.length)return '0';
+ return `<details class="refs"><summary>${ks.length} written</summary>${ks.map(m=>`<div><strong>Ch ${m.n}:</strong> ${esc(r[m.id].a||'')}${r[m.id].b?'<br><em>'+esc(r[m.id].b)+'</em>':''}</div>`).join('')}</details>`;
+}
+async function renderAdmin(){
+ let list;try{list=await dbList()}catch(e){$('#admTable').innerHTML='<div class="dashboard-empty">Could not load students from the database.</div>';return}
+ $('#admCount').textContent=list.length+' registered student'+(list.length===1?'':'s')+'.';
+ $('#admTable').innerHTML=list.length?`<table class="tbl"><thead><tr><th>Name</th><th>Student ID</th><th>Progress</th><th>Reflections</th><th>Registered</th><th></th></tr></thead><tbody>${list.map(([k,a])=>`<tr><td>${esc(a.name)}</td><td>${esc(a.id)}</td><td>${pct(a)}%</td><td>${refCell(a)}</td><td>${new Date(a.created).toLocaleDateString()}</td><td><button class="dashboard-button" data-remove="${esc(k)}">Remove</button></td></tr>`).join('')}</tbody></table>`:'<div class="dashboard-empty">No students have registered yet.</div>';
+}
+
+/* Global click handling */
+document.addEventListener('click',e=>{
+ const t=e.target.closest('[data-view],[data-open],[data-reflect],[data-logout],[data-remove],[data-showpw],.lesson-link,#allChaptersLink,a[href="#chapters"],.policy-button,a[href="#home"]');
+ if(!t)return;
+ if(t.dataset.open){return openMod(t.dataset.open)}
+ if(t.dataset.reflect){return openReflect(+t.dataset.reflect,true)}
+ if(t.hasAttribute('data-logout')){e.preventDefault();return logout()}
+ if(t.dataset.remove){
+  if(t.dataset.armed!=='1'){t.dataset.armed='1';t.textContent='Click again to confirm';setTimeout(()=>{t.dataset.armed='';t.textContent='Remove'},3000);return}
+  dbDelete(t.dataset.remove).then(renderAdmin).catch(()=>notify('Could not remove that student.'));return}
+ if(t.dataset.showpw){t.dataset.showpw.split(',').forEach(i=>{const f=document.getElementById(i);f.type=f.type==='password'?'text':'password'});return}
+ if(t.classList.contains('policy-button')){const c=t.nextElementSibling,o=t.getAttribute('aria-expanded')==='true';c.hidden=o;t.setAttribute('aria-expanded',!o);t.lastElementChild.textContent=o?'+':'−';return}
+ if(t.classList.contains('lesson-link')||t.id==='allChaptersLink'||t.getAttribute('href')==='#chapters'){e.preventDefault();return me()?show('dash'):show('login',{msg:'Log in to open the modules. New here? Register first.'})}
+ e.preventDefault();
+ if(t.dataset.view){return show(t.dataset.view)}
+ show('home');
+ $('#navLinks').classList.remove('open');
+});
+$('#navLinks').addEventListener('click',()=>$('#navLinks').classList.remove('open'));
+$('#menuToggle').onclick=()=>{const o=$('#navLinks').classList.toggle('open');$('#menuToggle').setAttribute('aria-expanded',o)};
+$('#navLogout').onclick=logout;
+
+if(!storageOK&&!REMOTE)$$('#viewRegister .auth-subtitle,#viewLogin .auth-subtitle').forEach(s=>s.insertAdjacentHTML('beforeend','<br><strong>Note: this preview cannot save data, so new accounts disappear when you close it. Use the example account below, or open the file in your browser or host it on Vercel.</strong>'));
+
+/* Light / dark theme */
+const K_THEME='sia1_theme_v1';
+const ICON_SUN='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>';
+const ICON_MOON='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9z"/></svg>';
+function applyTheme(t){
+ document.documentElement.setAttribute('data-theme',t);
+ const dark=t==='dark';
+ $$('[data-theme-toggle]').forEach(b=>{
+  b.setAttribute('aria-pressed',dark);
+  b.setAttribute('aria-label',dark?'Switch to light mode':'Switch to dark mode');
+  b.title=dark?'Switch to light mode':'Switch to dark mode';
+  b.querySelector('.ti').innerHTML=dark?ICON_SUN:ICON_MOON;
+ });
+}
+applyTheme(store.get(K_THEME,'light')==='dark'?'dark':'light');
+document.addEventListener('click',e=>{
+ const b=e.target.closest('[data-theme-toggle]');if(!b)return;
+ const t=document.documentElement.getAttribute('data-theme')==='dark'?'light':'dark';
+ store.set(K_THEME,t);applyTheme(t);
+});
+
+/* Jump to About / Contact / Policies from any page */
+document.addEventListener('click',e=>{
+ const a=e.target.closest('[data-scroll]');if(!a)return;
+ e.preventDefault();
+ const id=a.dataset.scroll;
+ if($('#viewHome').hidden)show('home');
+ requestAnimationFrame(()=>{const el=document.getElementById(id);if(el)el.scrollIntoView({behavior:'smooth',block:'start'})});
+ $('#navLinks').classList.remove('open');
+});
+
+/* Contact form: opens the student's email app */
+const INSTRUCTOR_EMAIL='LaarnieBartolome@gmail.com';
+$('#cfSend').onclick=()=>{
+ const n=$('#cfName').value.trim(),id=$('#cfId').value.trim(),t=$('#cfTopic').value,m=$('#cfMsg').value.trim();
+ if(!n||!m)return msg('#cfNote','Please enter your name and a message.',1);
+ const body='Name: '+n+'\nStudent ID: '+(id||'n/a')+'\nTopic: '+t+'\n\n'+m;
+ msg('#cfNote','Opening your email app…');
+ location.href='mailto:'+INSTRUCTOR_EMAIL+'?subject='+encodeURIComponent('[SIA 1] '+t+' - '+n)+'&body='+encodeURIComponent(body);
+};
+
+
+/* Learning articles */
+const ARTICLES=[{"title": "Four ways to connect systems", "sub": "Chapter 01 · Methods of system integration", "body": "<p>Choosing how to connect systems is one of the first integration decisions. The module describes four methods.</p><ul><li><strong>Point-to-point</strong> connects one system directly to another, which suits a 1:1 relationship and usually one business function. As systems increase, the number of connections grows and becomes hard to manage.</li><li><strong>Vertical</strong> links subsystems by how closely their functions relate, in silo-like structures. It is simple for a small number of systems but can be inflexible, because new functionality may need another silo.</li><li><strong>Star (spaghetti)</strong> is a collection of point-to-point links. It offers more functionality, but the connections become difficult to map and manage.</li><li><strong>Horizontal</strong> uses one specialized subsystem as a common layer, often called an Enterprise Service Bus (ESB). Subsystems connect through it instead of to each other, so fewer connections must be maintained.</li></ul><p><strong>Takeaway:</strong> the more systems you have, the more a common intermediary layer helps.</p>"}, {"title": "CRM vs ERP: same company, different jobs", "sub": "Chapter 01 · Systems and integration", "body": "<p>Both CRM and ERP support business operations, but they focus on different goals.</p><ul><li><strong>Customer Relationship Management (CRM)</strong> organizes and uses customer data such as contact details, transaction history, accounts and communication. Its primary objective is to help improve sales by making customer information available at a glance.</li><li><strong>Enterprise Resource Planning (ERP)</strong> manages business processes and automates back-office functions such as product planning, procurement and vendor management, manufacturing, and sales and marketing, all in one database and user interface. Its primary objective is usually to lower costs.</li></ul><p><strong>Takeaway:</strong> CRM is about customers and sales; ERP is about integrating internal processes to reduce cost. Integration lets the two share data instead of working as islands.</p>"}, {"title": "Interfaces and messages: how systems talk", "sub": "Chapter 02 · Systems requirements", "body": "<p>Integrated systems communicate through <strong>interfaces</strong>. A sending system uses an interface to deliver information to a receiving system, and one system can act as both sender and receiver.</p><p>What travels across an interface is a <strong>message</strong>. A message can contain three things:</p><ul><li><strong>Event:</strong> the occurrence that prompts a response.</li><li><strong>Information:</strong> structured data the receiver needs, such as invoice data or a passenger list.</li><li><strong>Control and routing information:</strong> details such as sender and receiver addresses or checksums.</li></ul><p>For example, when an electronic invoice arrives, the receiving system may confirm receipt and trigger an accounting system to record the balance.</p><p><strong>Related terms:</strong> EAI connects and coordinates applications inside an organization, while EDI is the standardized exchange of business documents between organizations.</p>"}, {"title": "What makes an architecture good? Quality attributes", "sub": "Chapter 03 · System architecture for integration", "body": "<p>Quality attributes are system properties separate from functionality. They help tell a good system from a poor one.</p><ul><li><strong>Static</strong> attributes describe structure and organization, such as modularity, testability and maintainability. Users do not see them directly, but they affect development and maintenance costs.</li><li><strong>Dynamic</strong> attributes describe behavior while running, such as throughput, robustness and scalability.</li></ul><p>Common run-time qualities include interoperability, reliability, scalability, security, performance and availability. Interoperability is the ability to exchange information successfully with external systems, which matters a lot in integration.</p><p>A <strong>quality scenario</strong> makes an attribute testable. It has six parts: source, stimulus, environment, artifact, response, and response measure.</p><p><strong>Takeaway:</strong> architecture is judged not only by what a system does but by how well it does it.</p>"}, {"title": "Architectural styles at a glance", "sub": "Chapter 03 · Architectural style", "body": "<p>An architectural style, or pattern, is a set of principles that shapes an application. The module groups common designs by focus area.</p><ul><li><strong>Communication:</strong> Message Bus and Service-Oriented Architecture (SOA).</li><li><strong>Deployment:</strong> Client/Server and 3-tier or N-tier.</li><li><strong>Domain:</strong> Domain-Driven Design.</li><li><strong>Structure:</strong> Component-Based, Layered and Object-Oriented.</li></ul><p>Software <strong>architecture</strong> deals with the larger structure and how processes cooperate, while software <strong>design</strong> covers the internal details of a single process.</p><p><strong>Takeaway:</strong> styles give you a shared vocabulary and reusable solutions to common structural problems.</p>"}, {"title": "The six steps of a systems integration project", "sub": "Chapter 04 · Integration process", "body": "<p>A systems integrator typically organizes the work into six phases.</p><ol><li><strong>Requirements gathering:</strong> meetings to learn what the client expects from the future system.</li><li><strong>Analysis:</strong> business analysts check feasibility and turn requirements into needs.</li><li><strong>Architecture design:</strong> plan how subsystems will be integrated and create blueprints.</li><li><strong>Systems integration design:</strong> the longest and most challenging phase, where the logical design becomes its physical equivalent.</li><li><strong>Implementation:</strong> verify and test the system, fix bugs, then go live.</li><li><strong>Maintenance:</strong> continued support, with components modified or added when needed.</li></ol><p><strong>Takeaway:</strong> each phase builds on the one before it, so skipping early steps tends to cost more later.</p>"}];
+(function(){
+ const ov=$('#articleOverlay');
+ function openArt(i){const a=ARTICLES[i];$('#artKicker').textContent=a.sub;$('#artTitle').textContent=a.title;$('#artBody').innerHTML=a.body;ov.classList.add('open');ov.querySelector('.article-modal').scrollTop=0;$('#artClose').focus()}
+ function closeArt(){ov.classList.remove('open')}
+ document.addEventListener('click',e=>{
+  const o=e.target.closest('[data-article]');if(o){openArt(+o.dataset.article);return}
+  const f=e.target.closest('[data-filter]');
+  if(f){$$('.chip').forEach(c=>c.classList.toggle('on',c===f));$$('.art-card').forEach(c=>c.hidden=!(f.dataset.filter==='all'||c.dataset.tag===f.dataset.filter));return}
+  if(e.target===ov||e.target.closest('#artClose'))closeArt();
+ });
+ document.addEventListener('keydown',e=>{if(e.key==='Escape'&&ov.classList.contains('open'))closeArt()});
+})();
+
+
+/* Highlight the current nav item (Home / About / Contact Us) */
+function spy(){
+ const links=$$('#navLinks a[data-view="home"],#navLinks a[data-scroll]');
+ let cur='home';
+ if(!$('#viewHome').hidden){
+  const y=window.scrollY+140;
+  ['about','contact'].forEach(id=>{const el=document.getElementById(id);if(el&&el.offsetTop<=y&&y<el.offsetTop+el.offsetHeight)cur=id});
+ }else cur='';
+ links.forEach(a=>a.classList.toggle('active',(a.dataset.scroll||'home')===cur));
+}
+window.addEventListener('scroll',spy,{passive:true});
+document.addEventListener('click',()=>setTimeout(spy,350));
+spy();
+/* Start: restore session */
+(function(){const s=session();if(s&&s.role==='admin')show('admin');else if(me())show('dash');else show('home')})();
+</script>
+</body>
+</html>
